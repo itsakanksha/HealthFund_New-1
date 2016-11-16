@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>HealthFund | Connecting Researchers with Investors and Patients</title>
+
+  <!-- Bootstrap Core CSS -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <link href="css/2-col-portfolio.css" rel="stylesheet">
+  <link href="css/custom.css" rel="stylesheet">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+  <script>
+      $(document).ready(function(){
+          $(".static_button").click(function() {
+              $(this).css("background-color", "#99bcbf");
+          });
+      });
+  </script>
+
+  <script src="https://www.gstatic.com/firebasejs/3.6.0/firebase.js"></script>
+  <script>
+    // Initialize Firebase
+    var config = {
+        apiKey: "AIzaSyDbJUBMk1sZD-XGvQFTt4VV-M10H4mZ1Ek",
+        authDomain: "healthfund-2d39b.firebaseapp.com",
+        databaseURL: "https://healthfund-2d39b.firebaseio.com",
+        storageBucket: "healthfund-2d39b.appspot.com",
+        messagingSenderId: "370511046282"
+    };
+    firebase.initializeApp(config);
+  </script>
+
+  <script type="text/javascript">
+
+  var signup_success = false;
+    /**
+     * Handles the sign in button press.
+     */
+    function toggleSignIn() {
+      if (firebase.auth().currentUser) {
+        // [START signout]
+        firebase.auth().signOut();
+        // [END signout]
+      } else {
+        var email = document.getElementById('email').value;
+        var password = document.getElementById('password').value;
+        if (email.length < 4) {
+            alert('Please enter an email address.');
+            return;
+        }
+        if (password.length < 4) {
+            alert('Please enter a password.');
+            return;
+        }
+        // Sign in with email and pass.
+        // [START authwithemail]
+        firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+          // Handle Errors here.
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          // [START_EXCLUDE]
+          if (errorCode === 'auth/wrong-password') {
+            alert('Wrong password.');
+          } else {
+              alert(errorMessage);
+          }
+          console.log(error);
+            // [END_EXCLUDE]
+        });
+          // [END authwithem!= null)
+      }
+    }
+
+    /**
+     * Handles the sign up button press.
+     */
+    function handleSignUp() {
+      var fullname = document.getElementById('fullname').value;
+      var phone = document.getElementById('phonenumber').value;
+      var email = document.getElementById('email').value;
+      var password = document.getElementById('password').value;
+      var confirmpassword = document.getElementById('confirmpassword').value;
+      if (email.length < 4) {
+        alert('Please enter an email address.');
+        return;
+      }
+      if (password.length < 4) {
+        alert('Please enter a password.');
+        return;
+      }
+      if (confirmpassword != password) {
+        alert('The two passwords input are not the same!');
+        return;
+      }
+
+      // Sign in with email and pass.
+      // [START createwithemail]
+      firebase.auth().createUserWithEmailAndPassword(email, password)
+        .then(function(user) {
+          signup_success = true;
+          writeUserData(user.uid, fullname, email, phone);
+        })
+        .catch(function(error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        // [START_EXCLUDE]
+        if (errorCode == 'auth/weak-password') {
+          alert('The password is too weak.');
+        } else {
+            alert(errorMessage);
+        }
+        console.log(error);
+        // [END_EXCLUDE]
+      });
+      // [END createwithemail]
+    }
+
+    /**
+     * Sends an email verification to the user.
+     */
+    function sendEmailVerification() {
+      // [START sendemailverification]
+      firebase.auth().currentUser.sendEmailVerification().then(function() {
+        // Email Verification sent!
+        // [START_EXCLUDE]
+        alert('Email Verification Sent!');
+        // [END_EXCLUDE]
+      });
+      // [END sendemailverification]
+    }
+
+    function sendPasswordReset() {
+      var email = document.getElementById('email').value;
+        // [START sendpasswordemail]
+      firebase.auth().sendPasswordResetEmail(email).then(function() {
+          // Password Reset Email Sent!
+          // [START_EXCLUDE]
+        alert('Password Reset Email Sent!');
+          // [END_EXCLUDE]
+      }).catch(function(error) {
+          // Handle Errors here.
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          // [START_EXCLUDE]
+          if (errorCode == 'auth/invalid-email') {
+            alert(errorMessage);
+          } else if (errorCode == 'auth/user-not-found') {
+            alert(errorMessage);
+          }
+          console.log(error);
+          // [END_EXCLUDE]
+      });
+        // [END sendpasswordemail];
+    }
+
+    function writeUserData(userId, name, email, contact) {
+      firebase.database().ref('users/' + userId).set(
+      {
+        fullname: name,
+        email: email,
+        phone : contact
+        /*bio: null,
+        skype: null,
+        googlehangout: null,
+        collaborations: null,
+        website: null,
+        linkedin: null, 
+        cv: null*/
+      }, function(onComplete){
+        window.location.href="./home_signedin.html";
+      });
+    }
+
+    /**
+     * initApp handles setting up UI event listeners and registering Firebase auth listeners:
+     *  - firebase.auth().onAuthStateChanged: This listener is called when the user is signed in or
+     *    out, and that is where we update the UI.
+     */
+    function initApp() {
+      document.getElementById('quickstart-sign-up').addEventListener('click', handleSignUp);
+    }
+
+
+    window.onload = function() {
+        initApp();
+    };
+  </script>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+          <!-- Brand and toggle get grouped for better mobile display -->
+          <div class="navbar-header">
+              <a class="navbar-brand" href="#">HealthFund</a>
+          </div>
+      </div>
+      <!-- /.container -->
+  </nav>
+
+  <!-- Page Content -->
+  <div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="child">
+                <center>
+                  <table>
+                    <tr>
+                        <td style="padding-right: 35px;">Full Name:
+                        </td>
+                        <td><input type="text" id="fullname">
+                        </td>
+                    </tr>
+                    <tr><td><br /></td></tr>
+                    <tr>
+                        <td>Contact Number:
+                        </td>
+                        <td><input type="text" id="phonenumber">
+                        </td>
+                    </tr>
+                    <tr><td><br /></td></tr>
+                    <tr>
+                        <td>E-mail:
+                        </td>
+                        <td><input type="text" id="email">
+                        </td>
+                    </tr>
+                    <tr><td><br /></td></tr>
+                    <tr>
+                        <td style="padding-right: 35px;">Password:
+                        </td>
+                        <td><input type="password" id="password">
+                        </td>
+                    </tr>
+                    <tr><td><br /></td></tr>
+                    <tr>
+                        <td style="padding-right: 35px;">Confirm Password:
+                        </td>
+                        <td><input type="password" id="confirmpassword">
+                        </td>
+                    </tr>
+                </table>
+                <br />
+                <!-- Who are you?<br /><br />
+                <table>
+                    <td style="padding-right: 10px;"><div class="static_button">SCIENTIST</div></td>
+                    <td style="padding-right: 10px;"><div class="static_button">INVESTOR</div></td>
+                    <td><div class="static_button">PATIENT</div></td>
+                </tr>
+            </table> -->
+                <br />
+                <table>
+                  <tr>
+                      <td style="padding-right: 35px;"><a href="#"><div class="login_button" id="quickstart-sign-up">SIGN UP</div></a>
+                      </td>
+                      <td><a href="home_guest.html"><div class="login_button">SKIP</div></a>
+                      </td>
+                  </tr>
+              </table>
+             </center>
+           </div>
+        </div>
+    </div> 
+    <!-- /.row -->
+  </div>
+  <!-- /.container -->
+
+  <!-- jQuery -->
+  <script src="js/jquery.js"></script>
+
+  <!-- Bootstrap Core JavaScript -->
+  <script src="js/bootstrap.min.js"></script>
+</body>
+</html>

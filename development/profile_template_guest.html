@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>HealthFund | Connecting Researchers with Investors and Patients</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="https://code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+    <!-- Custom CSS -->
+    <link href="css/2-col-portfolio.css" rel="stylesheet">
+    <link href="css/custom.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/stylesheet.css">
+    <link href="jquery-ui.css" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css"> -->
+    <!-- <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script> -->
+    <!-- <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script> -->
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="./dist/js/standalone/selectize.js"></script>
+    <script src="js/index.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.6.0/firebase.js"></script>
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyDbJUBMk1sZD-XGvQFTt4VV-M10H4mZ1Ek",
+        authDomain: "healthfund-2d39b.firebaseapp.com",
+        databaseURL: "https://healthfund-2d39b.firebaseio.com",
+        storageBucket: "healthfund-2d39b.appspot.com",
+        messagingSenderId: "370511046282"
+        };
+        firebase.initializeApp(config);
+    </script>
+
+    <script>
+
+        function signOut(){
+            firebase.auth().signOut().then(function() {
+                console.log('Signed Out');
+            }, function(error) {
+                console.error('Sign Out Error', error);
+            });
+        }
+
+
+        function initApp() {
+
+          firebase.auth().onAuthStateChanged(function(user) {
+            if (user) {
+                  // [END_EXCLUDE]
+              } else {
+              }
+          });
+
+          document.getElementById('quickstart-sign-out').addEventListener('click', signOut);
+        }
+
+        window.onload = function() {
+          initApp();
+        };
+    </script>
+
+
+    <script tyle="text/javascript">
+    function NDAClick()
+    {
+        $("#hidden_contact_info").show("slow");
+        $("#myModal").css({"display": "none"});
+    }
+    </script>
+
+    <style type="text/css">
+
+    /* Modal Header */
+    .modal-header {
+        padding: 2px 16px;
+        background-color: #8F9FC1;
+        color: white;
+    }
+
+    /* Modal Body */
+    .modal-body {
+        padding: 16px;
+        font-family: "Helvetica Neue";
+        font-size: 12px;
+    }
+
+    /* Modal Footer */
+    .modal-footer {
+        padding: 2px 16px;
+        background-color: #8F9FC1;
+        color: white;
+    }
+
+    /* Modal Content */
+    .modal-content {
+        position: relative;
+        background-color: #fefefe;
+        margin: auto;
+        margin-top: 100px; 
+        padding: 0;
+        border: 1px solid #888;
+        width: 80%;
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+        -webkit-animation-name: animatetop;
+        -webkit-animation-duration: 0.4s;
+        animation-name: animatetop;
+        animation-duration: 0.4s
+    }
+
+    /* Add Animation */
+    @-webkit-keyframes animatetop {
+        from {top: -300px; opacity: 0} 
+        to {top: 100px; opacity: 1}
+    }
+
+    @keyframes animatetop {
+        from {top: -300px; opacity: 0}
+        to {top: 100px; opacity: 1}
+    }
+
+    .close {
+        padding-top: 5px;
+        color: #000;
+    }
+
+    input[type=submit] {
+    padding-left:10px; 
+    padding-right: 10px; 
+    margin: 5px;
+    background: #f3f3f3; 
+    color: #333;
+    font-size: 12px;
+    border:0 none;
+    -webkit-border-radius: 3px;
+    border-radius: 3px; 
+    }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">HealthFund</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="home_guest.html">Home</a>
+                    </li>
+                    <li>
+                        <a href="help_guest.html">Help</a>
+                    </li>
+                    <li>
+                        <a href="about_guest.html">About</a>
+                    </li>
+                    <li>
+                        <a href="../index.html">Sign In</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container">
+
+
+        <!-- Page Header -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h3>XXX User's Profile</h3>
+                <hr>
+            </div>
+        </div> 
+        <div class="row">
+                <div class="col-lg-12">
+                    <center>
+                    <img src="images/default_profile.png" alt="" class="prof_pic" style="align: center; max-width: 100px; height: auto;" id="profileimage" />
+                    </center>
+                </div>
+        </div>
+        
+        <!-- /.row -->
+        <div class="row">
+            <div class="col-lg-12">
+
+                <div class="col-xs-9">
+                    <table>
+                        <tr class="spaceUnder">
+                            <td>Name:</td>
+                            <td id="name" name="fullname">{{name}}</td>
+                        </tr>
+                        <tr class="spaceUnder">
+                            <td>Short Bio (250 characters)</td>
+                            <td name="bio" id="bio">{{bio}}</td>
+                        </tr>
+                        <tr class="spaceUnder">
+                            <td>Collaborations</td>
+                            <td name="collaborations" id="collaborations">{{collaborations}}</td>
+                        </tr>
+                        <tr class="spaceUnder">
+                            <td>Other Projects</td>
+                            <td>{{list of projects}}</td>
+                        </tr>
+                    </table>
+                    <div id="view_contact_info" style="margin-left: 10px;"><a href="#"><h4 style="color: #8F9EC4; text-decoration: none;"><img src="images/arrow_down.png" alt="" style="max-width: 20px; height: auto; margin-right: 15px; margin-top: -3px;" />View Contact Information</h4></a></div>
+                    <br />
+                    <div id="myModal" class="modal">
+
+                      <!-- Modal content -->
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <span class="close">×</span>
+                            <h4>Non-Disclosure Agreement</h4>
+                          </div>
+                          <div class="modal-body">
+                            <p>Since you will be contacting the user through third party applications, HealthFund requires you to sign the NDA (Non-Disclosure Agreement) to preserve the rights of the user. You are not allowed to disclose any discussion that relates to their research listed on HealthFund. Read more <a href="https://drive.google.com/file/d/0Bwp3TT_fok3VZm4wZUtjZ09wMFE/view?usp=sharing" target="_blank">here</a>.</p>
+                          </div>
+                          <div class="modal-footer">
+                            <form name="NDA" onSubmit="return NDAClick()">
+                                 <input type="checkbox" name="checkbox" value="check"  />
+                                 <input type="submit" name="email_submit" value="I Agree" onclick="if(!this.form.checkbox.checked){alert('You must agree to the terms first.');return false}"  />
+                            </form>
+                          </div>
+                        </div>
+
+                    </div>
+                    <div id="hidden_contact_info" style="display: none;">
+                        <table>
+                            <tr class="spaceUnder">
+                                <td>E-mail Address:</td>
+                                <td id="email" name="email" >{{emailaddress}}</td>
+                            </tr>
+                            <tr class="spaceUnder">
+                                <td>Phone Number:</td>
+                                <td name="number" id="number">{{number}}</td>
+                            </tr>
+                            <tr class="spaceUnder">
+                                <td>Skype ID:</td>
+                                <td name="skype" id="skype">{{skype}}</td>
+                            </tr>
+                            <tr class="spaceUnder">
+                                <td>Google Hangout ID:</td>
+                                <td name="hangout" id="hangout">{{hangout}}</td>
+                            </tr>
+                            <tr class="spaceUnder">
+                                <td>Website URL:</td>
+                                <td name="website" id="website">{{website}}</td>
+                            </tr>
+                            <tr class="spaceUnder">
+                                <td>LinkedIn URL:</td>
+                                <td name="linkedin" id="linkedin">{{linkedin}}</td>
+                            </tr>
+                            <tr class="spaceUnder">
+                                <td>CV:</td>
+                                <td>
+                                    here
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div> 
+
+    </div>
+    <!-- /.container -->
+    <script>
+    // Get the modal
+    var modal = document.getElementById('myModal');
+    // Get the button that opens the modal
+    var btn = document.getElementById("view_contact_info");
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+    // When the user clicks on the button, open the modal 
+    btn.onclick = function() {
+        modal.style.display = "block";
+    }
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+    </script>
+
+
+    <script type="text/javascript">
+        document.getElementById("uploadBtn").onchange = function () {
+            document.getElementById("uploadFile").value = this.value;
+        };
+    </script>
+    <script language="text/javascript">
+
+        function enableField()
+        {
+            document.getElementsByClassName("edit").onclick = function() {
+                var x = document.getElementsByName("fullname");
+                x.disabled = false;
+            }
+        }
+    </script>
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

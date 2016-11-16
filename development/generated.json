@@ -1,0 +1,33 @@
+[
+  {
+    "greeting": "Hello, Opal! You have 8 unread messages.",
+    "friends": [
+      {
+        "name": "Peterson Washington"
+      },
+      {
+        "name": "Daugherty Cunningham"
+      },
+      {
+        "name": "Muriel Humphrey"
+      }
+    ],
+    "about": "Sunt et elit incididunt eu velit culpa esse. Aliquip cillum velit ullamco culpa Lorem tempor laborum irure veniam nisi aute. Non cupidatat consequat non culpa non.",
+    "address": "625 Townsend Street, Wakarusa, Mississippi, 5833",
+    "phone": "+1 (977) 454-3449",
+    "email": "opal.boyer@undefined.tv",
+    "poster": "QUONATA",
+    "name": {
+      "last": "Boyer",
+      "first": "Opal"
+    },
+    "age": 37,
+    "video": "https://youtu.be/Tyo0iKvwpbM",
+    "linkedurl": "https://www.linkedin.com/in/jace-lu-175151a5",
+    "picture": "http://whatsbits.com/uploads/10-2015/563271a682a0e.png",
+    "website": "https://codeinsuits.github.io/Jace-Portfolio/",
+    "_id": "581c12f17d7757226683f5b5",
+    "skype_id": "581c12f13d54f7b3a56b3e45",
+    "google_id": "581c12f160399bd57292b82e"
+  }
+]

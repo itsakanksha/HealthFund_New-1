@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>HealthFund | Connecting Researchers with Investors and Patients</title>
+
+  <!-- Bootstrap Core CSS -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <link href="css/2-col-portfolio.css" rel="stylesheet">
+  <link href="css/custom.css" rel="stylesheet">
+
+
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/stylesheet.css">
+  <link href="jquery-ui.css" rel="stylesheet">
+
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+  <script src="js/jquery.min.js"></script>
+  <script src="./dist/js/standalone/selectize.js"></script>
+  <script src="js/index.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/3.6.0/firebase.js"></script>
+  <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyDbJUBMk1sZD-XGvQFTt4VV-M10H4mZ1Ek",
+      authDomain: "healthfund-2d39b.firebaseapp.com",
+      databaseURL: "https://healthfund-2d39b.firebaseio.com",
+      storageBucket: "healthfund-2d39b.appspot.com",
+      messagingSenderId: "370511046282"
+    };
+    firebase.initializeApp(config);
+  </script>
+
+  <script type="text/javascript">
+    function signOut(){
+      firebase.auth().signOut().then(function() {
+          console.log('Signed Out');
+          window.location.href="../index.html";
+      }, function(error) {
+          console.error('Sign Out Error', error);
+      });
+    }
+
+    function saveProjectInfo() {
+      var title = document.getElementById('title');
+      var description = document.getElementById('description');
+      var context = document.getElementById('context');
+      var significance = document.getElementById('significance');
+      var goals = document.getElementById('goals');
+      var collaborators = document.getElementById('collaborators');
+      var projImg = document.getElementById('projImg');
+
+      var userID = firebase.auth().currentUser.uid;
+      var userRef = firebase.database().ref('users/' + userID + '/projects');
+
+      var projRef = firebase.database().ref('projects');
+
+      var newProjRef = projRef.push();
+      newProjRef.set({
+        title: title.value, 
+        description: description.value,
+        context: context.value,
+        significance: significance.value,
+        goals: goals.value,
+        collaborators: collaborators.value,
+        author: userID,
+        projImg: projImg.value
+      });
+
+      var projID = newProjRef.key;
+      userRef.push(projID);
+
+      alert("Your project has been created!");
+
+      window.location.href = "./myprojects.html";
+    }
+
+    /**
+     * initApp handles setting up UI event listeners and registering Firebase auth listeners:
+     *  - firebase.auth().onAuthStateChanged: This listener is called when the user is signed in or
+     *    out, and that is where we update the UI.
+     */
+    function initApp() {
+      // Listening for auth state changes.
+      // [START authstatelistener]
+      firebase.auth().onAuthStateChanged(function(user) {
+
+        if (user) {
+          // User is signed in.
+          var userID = user.uid;
+          var email = user.email;
+          var userRef = firebase.database().ref('users/' + userID);
+        } else {
+          window.location.href="../index.html";
+        }
+      });
+      // [END authstatelistener]
+      document.getElementById('quickstart-sign-out').addEventListener('click', signOut);
+      document.getElementById('quickstart-save-project').addEventListener('click', saveProjectInfo);
+    }
+
+
+    window.onload = function() {
+        initApp();
+    };
+  </script> 
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">HealthFund</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+                    <ul class="nav navbar-nav">
+                    <li>
+                        <a href="home_signedin.html">Home</a>
+                    </li>
+                    <li>
+                        <a href="myaccount.html">My Account</a>
+                    </li>
+                    <li>
+                        <a href="myprojects.html">My Projects</a>
+                    </li>
+                    <li>
+                        <a href="help_signedin.html">Help</a>
+                    </li>
+                    <li>
+                        <a href="about_signedin.html">About</a>
+                    </li>
+                    <li>
+                        <a href="#" id="quickstart-sign-out">Sign Out</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container">
+
+        
+        <!-- Page Header -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h3>Create A New Project</h3>
+                <hr>
+            </div>
+        </div> 
+        <!-- /.row -->
+        <!-- Projects Row -->
+
+        <div class="row">
+            <div class="col-lg-12">
+                        <table>
+            <tr>
+                <td style="padding-right: 20px;">
+                    Title: 
+                </td>
+                <td>
+                    <input type="text" id="title" name="title" size="37">
+                </td>
+            </tr>
+            <tr><td><br /></td></tr>
+            <tr>
+                <td style="padding-right: 20px;">
+                    Description: 
+                </td>
+                <td>
+                    <textarea name="description" id="description" rows="4" cols="40"></textarea>
+                </td>
+            </tr>
+            <tr><td><br /></td></tr>
+            <tr>
+                <td style="padding-right: 20px;">
+                    Context of Research: 
+                </td>
+                <td>
+                    <textarea name="context" id="context" rows="4" cols="40"></textarea>
+                </td>
+            </tr>
+            <tr><td><br /></td></tr>
+            <tr>
+                <td style="padding-right: 20px;">
+                    Significance: 
+                </td>
+                <td>
+                    <textarea name="significance" id="significance" rows="4" cols="40"></textarea>
+                </td>
+            </tr>
+            <tr><td><br /></td></tr>
+            <tr>
+                <td style="padding-right: 20px;">
+                    Goals of this project: 
+                </td>
+                <td>
+                    <textarea rows="4" name="goals" id="goals" cols="40"></textarea>
+                </td>
+            </tr>
+            <tr><td><br /></td></tr>
+            <tr>
+                <td style="padding-right: 20px;">
+                    Project Image (URL):
+                </td>
+                <td>
+                    <input type="text" id="projImg" name="projImg" size="37">
+                </td>
+            </tr>
+            <!--
+            <tr>
+                <td style="padding-right: 20px;">
+                    Project Image: 
+                </td>
+                <td>
+                    <input id="uploadFile" placeholder="Choose File" disabled="disabled" />
+                    <div class="fileUpload btn btn-primary">
+                        <span>Upload</span>
+                        <input id="uploadBtn" type="file" class="upload" />
+                    </div>
+                </td>
+            </tr>
+            -->
+            <tr><td><br /></td></tr>
+            <tr>
+                <td style="padding-right: 20px;">
+                    Collaborators: 
+                </td>
+                <td>
+                    <input type="text" name="collaborators" id="collaborators" size="37">
+                </td>
+            </tr>
+            <tr><td><br /></td></tr>
+            <!--
+            <tr><td><br /></td></tr>
+            <tr>
+                <td style="padding-right: 20px;">
+                    Video Pitches: 
+                </td>
+                <td>
+                    <input id="uploadFile" placeholder="Choose File" disabled="disabled" />
+                    <div class="fileUpload btn btn-primary">
+                        <span>Upload</span>
+                        <input id="uploadBtn" type="file" class="upload" />
+                    </div>
+                </td>
+            </tr>
+            -->
+        </table>
+                <br /><br />
+                <center><a href="#"><div class="login_button" id="quickstart-save-project">SUBMIT</div></a><br /></center>            </div>
+        </div>
+
+    </div>
+    <!-- /.container -->
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

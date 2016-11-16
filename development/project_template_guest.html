@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>HealthFund | Connecting Researchers with Investors and Patients</title>
+
+<!-- Bootstrap Core CSS -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <link href="css/2-col-portfolio.css" rel="stylesheet">
+  <link href="css/custom.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/stylesheet.css">
+  <link href="jquery-ui.css" rel="stylesheet">
+
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+  <script src="js/jquery.min.js"></script>
+  <script src="./dist/js/standalone/selectize.js"></script>
+  <script src="js/index.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/3.6.0/firebase.js"></script>
+  <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyDbJUBMk1sZD-XGvQFTt4VV-M10H4mZ1Ek",
+      authDomain: "healthfund-2d39b.firebaseapp.com",
+      databaseURL: "https://healthfund-2d39b.firebaseio.com",
+      storageBucket: "healthfund-2d39b.appspot.com",
+      messagingSenderId: "370511046282"
+    };
+    firebase.initializeApp(config);
+  </script>
+
+  <script>
+
+  function signOut(){
+      firebase.auth().signOut().then(function() {
+          console.log('Signed Out');
+      }, function(error) {
+          console.error('Sign Out Error', error);
+      });
+  }
+
+  function initApp() {
+    // Listening for auth state changes.
+    // [START authstatelistener]
+    firebase.auth().onAuthStateChanged(function(user) {
+      // [START_EXCLUDE silent]
+      // [END_EXCLUDE]
+      if (user) {
+        // User is signed in.
+        var userID = user.uid;
+        var email = user.email;
+        var userRef = firebase.database().ref('users/' + userID + '/projects').orderByKey();
+
+
+        var projectList = document.getElementById("div1");
+
+        userRef.once("value")
+          .then(function(snapshot) {
+            snapshot.forEach(function(childSnapshot){
+
+              var projectID = childSnapshot.val();
+              
+              var projRef = firebase.database().ref('projects/' + projectID).orderByKey();
+              projRef.on('value', function(snapshot) {
+                var projectTitle = snapshot.child("title").val();
+
+                var x = document.createElement("LI");
+                var link = document.createElement("a");
+                var node = document.createTextNode(projectTitle);
+
+                link.href="#";
+
+                x.appendChild(link);
+                link.appendChild(node);
+                projectList.appendChild(x);
+
+              });
+
+          });
+        }); 
+      } else {
+      }
+        // [START_EXCLUDE silent]
+        // [END_EXCLUDE]
+    });
+      // [END authstatelistener]
+    document.getElementById('quickstart-sign-out').addEventListener('click', signOut);
+  }
+
+  window.onload = function() {
+      initApp();
+  };
+</script>
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">HealthFund</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="home_guest.html">Home</a>
+                    </li>
+                    <li>
+                        <a href="help_guest.html">Help</a>
+                    </li>
+                    <li>
+                        <a href="about_guest.html">About</a>
+                    </li>
+                    <li>
+                        <a href="../index.html">Sign In</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container">
+
+        
+        <!-- Page Header -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h3>Mathematical Model To Reduce Maternal And Infant Mortality In Southeast Asia</h3>
+                <hr>
+            </div>
+        </div> 
+        <!-- /.row -->
+        <!-- Projects Row -->
+
+        <div class="row">
+            <div id="project-image" class="col-lg-12">
+            <div class="project_image"><img src="images/mortality.jpg" alt="" style="max-height: 200px;" /> </div>    
+            <hr>
+            </div>
+            <div id="project-writeup" class="col-lg-12">
+                <h4>Description</h4>      
+                <p>Maternal and child mortality in Southeast Asian countries is still very high, especially in poor and rural areas. The goal of our study is to develop user-friendly mathematical model to improve referral of high-risk term pregnancies in resource-poor settings; creating a more resource-efficient health system, while delivering better health outcomes to mothers and children. <br /><br />
+                <b>Context of This Research</b><br />
+                The poor quality of antenatal, delivery and postnatal health care services is a major barrier to reducing maternal and child deaths. Across all population groups, the coverage relating to service quality, quantity, and access consistently score very low. <br/>
+
+                For example, of 2,100 obstetrician-gynaecologists (OB -GYN) in Indonesia, more than half practice in Java. This disparity causes limited quantity of human health resources in rural and underdeveloped areas. <br />
+
+                With the relatively few resources and inadequate local capacities, knowledge of referral conditions should be strategically strengthened to promote appropriate use of these facilities.<br /><br />
+
+                <b>Significance</b><br />
+
+                Currently, our ability to define such a fetus with growth restriction (<2500 g) and macrosomia (>4000 g) for referral is limited. The most commonly used method is the Johnson-Toshach formula, especially in primary care setting where there’s no ultrasonography facility. However, various studies show that Johnson-Toshach is inaccurate. Effective screening of those with high-risk term pregnancies requires better precision for timely referral to the higher level facilities.<br />
+
+                There is a need for a formula that does better than Johnson-Toshach in accurately predicting fetal weight on strategies to detect high risk pregnancies and accurate referral system while minimizing unnecessary referrals.<Br />
+
+                This will make healthcare delivery more efficient: saving lives and reducing costs.<br /><br />
+
+                <b>Goals of the project</b><br />
+
+                Given this knowledge gap, we would like to develop an improved mathematical model, more accurate and easier to use, to better predict fetal weights at risk in Southeast Asia. This study sought to take into account the field’s constraints, such as births in primary care, or attended only by traditional birth attendants or family members. <br />
+
+                The lack of resources and advanced facilities’ setting, make it even more important to be able to detect high risk pregnancies with accurate and efficient formula, which is fundamental for high quality antenatal care.</p> 
+                <hr>
+            </div>
+            <div id="funds-received" class="col-lg-12">
+                <h4>Funds Received</h4>      
+                <div class="progress">
+                  <div class="progress-bar" role="progressbar" aria-valuenow="40"
+                  aria-valuemin="0" aria-valuemax="100" style="width:40%">
+                    $7000
+                  </div>
+
+                </div>
+
+                <div style="float: left;">$0</div><div style="float: right">$25,000+</div><br />
+                <hr>
+            </div>
+            <div id="project-authors" class="col-lg-12">
+                <h4>Authors</h4>      
+                <p><a href="LINK TO THER PROFILE">Christian Suharlim</a> and <a href="LINK TO THEIR PROFILE">Novita Liman</a></p>
+            <hr>
+            </div>
+            <div id="project-collaborators" class="col-lg-12">
+                <h4>Collaborators</h4>      
+                <p><a href="LINK TO THER PROFILE">Denny Luan</a>, <a href="LINK TO THER PROFILE">Seawris Pinnan</a>, <a href="LINK TO THER PROFILE">Andrew Wong</a>, Dana Rye, Stella Margaretha</p> 
+                <!-- SOME USERS MAY NOT HAVE PROFILES ON THIS APP SO NO LINK FOR THEM! -->
+                <hr>
+            </div>
+            <div id="how-to-donate" class="col-lg-12">
+                <h4>How To Donate?</h4> 
+                <p>We believe that investors and donors might feel more secure if they pay the researchers and scientists directly, instead of paying through a third party website. You can read more about the authors by clicking on their names above and finding their contact information on their profiles. If their work has interested you, feel free to reach out to them to discuss this project and any donations you'd like to make.</p>   
+            </div>
+        </div>
+    <!-- /.container -->
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+</body>
+
+</html>
