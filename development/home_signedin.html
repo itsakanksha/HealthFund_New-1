@@ -72,12 +72,7 @@
           projectRef.once("value")
           .then(function(snapshot) {
             snapshot.forEach(function(childSnapshot){
-
               var project = childSnapshot.val();
-              console.log(project.title);
-              console.log(project.description);
-              console.log(project.projImg);
-
               var new_project = document.createElement('div');
               new_project.setAttribute("class", "img");
               var project_image = document.createElement("img");
@@ -88,17 +83,23 @@
               var to_center = document.createElement('center');
               to_center.appendChild(project_image);
               new_project.appendChild(to_center);
+
               var new_title = document.createElement('div');
               new_title.setAttribute("class", "tit");
               new_title.appendChild(document.createTextNode(project.title));
               var new_description = document.createElement('div');
               new_description.setAttribute("class", "desc");
               new_description.appendChild(document.createTextNode(project.description));
-              new_project.appendChild(new_title);
+              var project_link = document.createElement('a');
+              var linkID = childSnapshot.key;
+              var strLink = "project_template_signedin.html" + "?key=" + linkID;
+              project_link.setAttribute("href",strLink);
+              project_link.appendChild(new_title);
+              new_project.appendChild(project_link);
               new_project.appendChild(new_description);
               var portfolio = document.getElementById("portfolio");
               portfolio.appendChild(new_project);
-
+              
 
             });
 }); 
@@ -337,11 +338,11 @@ userRef.on('value', function(snapshot) {
   </div>
   <hr>
 
-    <div class="row">
-      <div class="col-lg-12">
-        <center><p>Copyright &copy; HealthFund 2016</p></center>
-      </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <center><p>Copyright &copy; HealthFund 2016</p></center>
     </div>
+  </div>
 
 
   <script type="text/javascript">

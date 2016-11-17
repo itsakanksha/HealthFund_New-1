@@ -59,6 +59,7 @@
     var project_name = a.substring(a.indexOf("=")+1);
     var doc_context = document.getElementById("context");
     var doc_title = document.getElementById("title");
+    var doc_img = document.getElementById("source-image");
     var doc_description = document.getElementById("description");
     var doc_significance = document.getElementById("significance");
     var doc_goals = document.getElementById("goals");
@@ -104,9 +105,17 @@
 
       var author = snapshot.val().author;
       if (author != null)
-        doc_author.innerHTML = author;
+        firebase.database().ref('/users/' + author).once('value').then(function(snapshot) {
+          var authorname = snapshot.val().fullname;
+          doc_author.innerHTML = authorname;
+        });
+
       else
         doc_author.innerHTML = "To be updated!";
+
+      var image = snapshot.val().projImg;
+      if (image !=null)
+        doc_img.setAttribute("src", image);
 
     });
 
@@ -197,7 +206,7 @@
     <div class="row">
       <div id="project-image" class="col-lg-12">
         <center>
-          <div class="project_image"><img id="source-image" src="images/mortality.jpg" alt="" style="max-height: 200px;width: 100%;" /> </div>  
+          <div class="project_image"><img id="source-image" src="images/mortality.jpg" alt="Project image url uploaded is incorrect!" style="max-height: 200px;width: 100%;" /> </div>  
         </center>  
         <hr>
       </div>
