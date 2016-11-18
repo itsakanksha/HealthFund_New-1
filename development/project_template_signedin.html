@@ -116,7 +116,6 @@
       var image = snapshot.val().projImg;
       if (image !=null)
         doc_img.setAttribute("src", image);
-
     });
 
     firebase.auth().onAuthStateChanged(function(user) {
@@ -206,7 +205,7 @@
     <div class="row">
       <div id="project-image" class="col-lg-12">
         <center>
-          <div class="project_image"><img id="source-image" src="" alt="Project image url uploaded is incorrect!" style="max-height: 200px;width: 100%;" /> </div>  
+          <div class="project_image"><img id="source-image" src="" alt="Project image url uploaded is incorrect!" style="" /> </div>  
         </center>  
         <hr>
       </div>
