@@ -40,22 +40,53 @@
         databaseURL: "https://healthfund-2d39b.firebaseio.com",
         storageBucket: "healthfund-2d39b.appspot.com",
         messagingSenderId: "370511046282"
-      };
-      firebase.initializeApp(config);
-    </script>
+    };
+    firebase.initializeApp(config);
+</script>
 
-    <script>
-        function signOut(){
-            firebase.auth().signOut().then(function() {
-                console.log('Signed Out');
-                window.location.href="../index.html";
-            }, function(error) {
-                console.error('Sign Out Error', error);
-            });
-        }
+<script>
+    // $('#NDA').submit(function (){
+    //     alert('iam here!')
+    //     if($('#agreement').checked){
+    //         $("#hidden_contact_info").show("slow");
+    //         $("#myModal").css({"display": "none"});
+    //     }
+    //     else{
+    //         alert("You need to check to agree first!");
+    //     }
+    //     return false;
+    // });
+
+    // function NDAClick(event)
+    // {
+    //     event.preventdefault();
+    //     $("#hidden_contact_info").show("slow");
+    //     $("#myModal").css({"display": "none"});
+    //     return false;
+    // }
+    function signOut(){
+        firebase.auth().signOut().then(function() {
+            console.log('Signed Out');
+            window.location.href="../index.html";
+        }, function(error) {
+            console.error('Sign Out Error', error);
+        });
+    }
 
 
-        function initApp() {
+    function initApp() {
+        var a = window.location.toString();
+        var author_id = a.substring(a.indexOf("=")+1);
+        var userRef = firebase.database().ref('users/' + author_id);
+        var name_onfile = document.getElementById("name");
+        var bio_onfile = document.getElementById("bio");
+        var email_onfile = document.getElementById("email");
+        var phone_onfile = document.getElementById("phone");
+        var skype_onfile = document.getElementById("skype");
+        var hangout_onfile = document.getElementById("hangout");
+        var collaborations_onfile = document.getElementById("collaborations");
+        var website_onfile = document.getElementById("website");
+        var linkedin_onfile = document.getElementById("linkedin");
           // Listening for auth state changes.
           // [START authstatelistener]
           firebase.auth().onAuthStateChanged(function(user) {
@@ -63,11 +94,63 @@
             //document.getElementById('quickstart-verify-email').disabled = true;
             // [END_EXCLUDE]
             if (user) {
+
+                userRef.on('value', function(snapshot) {
+                    var fullName = snapshot.val().fullname;
+                    if (fullName != null)
+                      name_onfile.innerHTML = fullName;
+                  else
+                      name_onfile.innerHTML = "This Information does not exist!";
+
+                  var shortBio = snapshot.val().bio;
+                  if (shortBio != null)
+                      bio_onfile.innerHTML = shortBio;
+                  else
+                      bio_onfile.innerHTML = "This Information does not exist!";
+
+                  email_onfile.innerHTML = user.email;
+
+                  var phoneNumber = snapshot.val().phone;
+                  if (phoneNumber != null)
+                      phone_onfile.innerHTML = phoneNumber;
+                  else
+                      phone_onfile.innerHTML = "This Information does not exist!";
+
+                  var skype = snapshot.val().skype;
+                  if (skype != null)
+                      skype_onfile.innerHTML = skype;
+                  else
+                      skype_onfile.innerHTML = "This Information does not exist!";
+
+                  var hangout = snapshot.val().hangout;
+                  if (hangout != null)
+                      hangout_onfile.innerHTML = hangout;
+                  else
+                      hangout_onfile.innerHTML = "This Information does not exist!";
+
+                  var collaborations = snapshot.val().collaborations;
+                  if (collaborations != null)
+                      collaborations_onfile.innerHTML = collaborations;
+                  else
+                      collaborations_onfile.innerHTML = "This Information does not exist!";
+
+                  var website = snapshot.val().website;
+                  if (website != null)
+                      website_onfile.innerHTML = website;
+                  else
+                      website_onfile.innerHTML = "This Information does not exist!";
+
+                  var linkedin = snapshot.val().linkedin;
+                  if (linkedin != null)
+                      linkedin_onfile.innerHTML = linkedin;
+                  else
+                      linkedin_onfile.innerHTML = "This Information does not exist!";
+              });
             } else {
 
                 window.location.href="../index.html";
             }
-          });
+        });
           // [END authstatelistener]
 
           document.getElementById('quickstart-sign-out').addEventListener('click', signOut);
@@ -76,17 +159,10 @@
       window.onload = function() {
           initApp();
       };
-    </script>
+  </script>
 
-    <script tyle="text/javascript">
-    function NDAClick()
-    {
-        $("#hidden_contact_info").show("slow");
-        $("#myModal").css({"display": "none"});
-    }
-    </script>
 
-    <style type="text/css">
+  <style type="text/css">
 
     /* Modal Header */
     .modal-header {
@@ -142,17 +218,17 @@
     }
 
     input[type=submit] {
-    padding-left:10px; 
-    padding-right: 10px; 
-    margin: 5px;
-    background: #f3f3f3; 
-    color: #333;
-    font-size: 12px;
-    border:0 none;
-    -webkit-border-radius: 3px;
-    border-radius: 3px; 
+        padding-left:10px; 
+        padding-right: 10px; 
+        margin: 5px;
+        background: #f3f3f3; 
+        color: #333;
+        font-size: 12px;
+        border:0 none;
+        -webkit-border-radius: 3px;
+        border-radius: 3px; 
     }
-    </style>
+</style>
 </head>
 
 <body>
@@ -173,7 +249,7 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
-                    <ul class="nav navbar-nav">
+                <ul class="nav navbar-nav">
                     <li>
                         <a href="home_signedin.html">Discover Projects</a>
                     </li>
@@ -206,17 +282,17 @@
         <!-- Page Header -->
         <div class="row">
             <div class="col-lg-12">
-                <h3>XXX User's Profile</h3>
+            <h3>Author's Profile</h3>
                 <hr>
             </div>
         </div> 
-        <div class="row">
-                <div class="col-lg-12">
-                    <center>
+        <!-- <div class="row">
+            <div class="col-lg-12">
+                <center>
                     <img src="images/default_profile.png" alt="" class="prof_pic" style="align: center; max-width: 100px; height: auto;" id="profileimage" />
-                    </center>
-                </div>
-        </div>
+                </center>
+            </div>
+        </div> -->
         
         <!-- /.row -->
         <div class="row">
@@ -237,73 +313,89 @@
                             <td name="collaborations" id="collaborations">{{collaborations}}</td>
                         </tr>
                         <tr class="spaceUnder">
-                            <td>Other Projects</td>
-                            <td>{{list of projects}}</td>
+                            <td>E-mail Address:</td>
+                            <td id="email" name="email" >{{emailaddress}}</td>
                         </tr>
+                        <tr class="spaceUnder">
+                            <td>Phone Number:</td>
+                            <td name="number" id="phone">{{number}}</td>
+                        </tr>
+                        <tr class="spaceUnder">
+                            <td>Skype ID:</td>
+                            <td name="skype" id="skype">{{skype}}</td>
+                        </tr>
+                        <tr class="spaceUnder">
+                            <td>Google Hangout ID:</td>
+                            <td name="hangout" id="hangout">{{hangout}}</td>
+                        </tr>
+                        <tr class="spaceUnder">
+                            <td>Website URL:</td>
+                            <td name="website" id="website">{{website}}</td>
+                        </tr>
+                        <tr class="spaceUnder">
+                            <td>LinkedIn URL:</td>
+                            <td name="linkedin" id="linkedin">{{linkedin}}</td>
+                        </tr>
+                        <!-- <tr class="spaceUnder">
+                            <td>Other Projects</td>
+                            <td name="projects" id="projects">{{list of projects}}</td>
+                        </tr> -->
                     </table>
-                    <div id="view_contact_info" style="margin-left: 10px;"><a href="#"><h4 style="color: #8F9EC4; text-decoration: none;"><img src="images/arrow_down.png" alt="" style="max-width: 20px; height: auto; margin-right: 15px; margin-top: -3px;" />View Contact Information</h4></a></div>
-                    <br />
+                    <!-- <div id="view_contact_info" style="margin-left: 10px;"><h4 style="color: #8F9EC4; text-decoration: none;"><img src="images/arrow_down.png" alt="" style="max-width: 20px; height: auto; margin-right: 15px; margin-top: -3px;" />View Contact Information</h4></div>
+                    <br/>
                     <div id="myModal" class="modal">
 
-                      <!-- Modal content -->
-                        <div class="modal-content">
+                      <div class="modal-content">
                           <div class="modal-header">
                             <span class="close">×</span>
                             <h4>Non-Disclosure Agreement</h4>
-                          </div>
-                          <div class="modal-body">
-                            <p>Since you will be contacting the user through third party applications, HealthFund requires you to sign the NDA (Non-Disclosure Agreement) to preserve the rights of the user. You are not allowed to disclose any discussion that relates to their research listed on HealthFund. Read more <a href="https://drive.google.com/file/d/0Bwp3TT_fok3VZm4wZUtjZ09wMFE/view?usp=sharing" target="_blank">here</a>.</p>
-                          </div>
-                          <div class="modal-footer">
-                            <form name="NDA" onSubmit="return NDAClick()">
-                                 <input type="checkbox" name="checkbox" value="check"  />
-                                 <input type="submit" name="email_submit" value="I Agree" onclick="if(!this.form.checkbox.checked){alert('You must agree to the terms first.');return false}"  />
-                            </form>
-                          </div>
                         </div>
+                        <div class="modal-body">
+                            <p>Since you will be contacting the user through third party applications, HealthFund requires you to sign the NDA (Non-Disclosure Agreement) to preserve the rights of the user. You are not allowed to disclose any discussion that relates to their research listed on HealthFund. Read more <a href="https://drive.google.com/file/d/0Bwp3TT_fok3VZm4wZUtjZ09wMFE/view?usp=sharing" target="_blank">here</a>.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <form id="NDA">
+                             <input type="checkbox" id="agreement" name="checkbox" value="check"/>
+                             <input type="submit" name="email_submit" value="I Agree">
+                            </form>
+                     </div>
+                 </div>
 
-                    </div>
-                    <div id="hidden_contact_info" style="display: none;">
-                        <table>
-                            <tr class="spaceUnder">
-                                <td>E-mail Address:</td>
-                                <td id="email" name="email" >{{emailaddress}}</td>
-                            </tr>
-                            <tr class="spaceUnder">
-                                <td>Phone Number:</td>
-                                <td name="number" id="number">{{number}}</td>
-                            </tr>
-                            <tr class="spaceUnder">
-                                <td>Skype ID:</td>
-                                <td name="skype" id="skype">{{skype}}</td>
-                            </tr>
-                            <tr class="spaceUnder">
-                                <td>Google Hangout ID:</td>
-                                <td name="hangout" id="hangout">{{hangout}}</td>
-                            </tr>
-                            <tr class="spaceUnder">
-                                <td>Website URL:</td>
-                                <td name="website" id="website">{{website}}</td>
-                            </tr>
-                            <tr class="spaceUnder">
-                                <td>LinkedIn URL:</td>
-                                <td name="linkedin" id="linkedin">{{linkedin}}</td>
-                            </tr>
-                            <tr class="spaceUnder">
-                                <td>CV:</td>
-                                <td>
-                                    here
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div> 
-
+             </div> -->
+             <!-- <div id="hidden_contact_info" style="display: none;">
+               <table>
+                <tr class="spaceUnder">
+                    <td>E-mail Address:</td>
+                    <td id="email" name="email" >{{emailaddress}}</td>
+                </tr>
+                <tr class="spaceUnder">
+                    <td>Phone Number:</td>
+                    <td name="number" id="phone">{{number}}</td>
+                </tr>
+                <tr class="spaceUnder">
+                    <td>Skype ID:</td>
+                    <td name="skype" id="skype">{{skype}}</td>
+                </tr>
+                <tr class="spaceUnder">
+                    <td>Google Hangout ID:</td>
+                    <td name="hangout" id="hangout">{{hangout}}</td>
+                </tr>
+                <tr class="spaceUnder">
+                    <td>Website URL:</td>
+                    <td name="website" id="website">{{website}}</td>
+                </tr>
+                <tr class="spaceUnder">
+                    <td>LinkedIn URL:</td>
+                    <td name="linkedin" id="linkedin">{{linkedin}}</td>
+                </tr>
+            </table>
+        </div> -->
     </div>
-    <!-- /.container -->
-    <script>
+</div>
+</div> 
+</div>
+<!-- /.container -->
+<script>
     // Get the modal
     var modal = document.getElementById('myModal');
     // Get the button that opens the modal
@@ -324,30 +416,30 @@
             modal.style.display = "none";
         }
     }
-    </script>
+</script>
 
 
-    <script type="text/javascript">
-        document.getElementById("uploadBtn").onchange = function () {
-            document.getElementById("uploadFile").value = this.value;
-        };
-    </script>
-    <script language="text/javascript">
+<!-- <script type="text/javascript">
+    document.getElementById("uploadBtn").onchange = function () {
+        document.getElementById("uploadFile").value = this.value;
+    };
+</script> -->
+<script language="text/javascript">
 
-        function enableField()
-        {
-            document.getElementsByClassName("edit").onclick = function() {
-                var x = document.getElementsByName("fullname");
-                x.disabled = false;
-            }
+    function enableField()
+    {
+        document.getElementsByClassName("edit").onclick = function() {
+            var x = document.getElementsByName("fullname");
+            x.disabled = false;
         }
-    </script>
+    }
+</script>
 
-    <!-- jQuery -->
-    <script src="js/jquery.js"></script>
+<!-- jQuery -->
+<script src="js/jquery.js"></script>
 
-    <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
+<!-- Bootstrap Core JavaScript -->
+<script src="js/bootstrap.min.js"></script>
 
 </body>
 

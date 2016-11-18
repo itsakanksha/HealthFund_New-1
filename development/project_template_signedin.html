@@ -108,6 +108,8 @@
         firebase.database().ref('/users/' + author).once('value').then(function(snapshot) {
           var authorname = snapshot.val().fullname;
           doc_author.innerHTML = authorname;
+          var strlink = "profile_template_signedin.html" + "?key=" + author;
+          doc_author.setAttribute("href",strlink);
         });
 
       else
@@ -205,7 +207,7 @@
     <div class="row">
       <div id="project-image" class="col-lg-12">
         <center>
-          <div class="project_image"><img id="source-image" src="" alt="Project image url uploaded is incorrect!" style="" /> </div>  
+          <div class="project_image"><img id="source-image" src="" alt="Project image url uploaded is incorrect!" style="height: auto;width: 100%;"/> </div>  
         </center>  
         <hr>
       </div>
@@ -224,7 +226,7 @@
         <p id="goals"></p> 
         <hr>
       </div>
-      <div id="funds-received" class="col-lg-12">
+      <!-- <div id="funds-received" class="col-lg-12">
         <h4>Funds Received</h4>      
         <div class="progress">
           <div class="progress-bar" role="progressbar" aria-valuenow="40"
@@ -236,10 +238,10 @@
 
       <div style="float: left;">$0</div><div style="float: right">$25,000+</div><br />
       <hr>
-    </div>
+    </div> -->
     <div id="project-authors" class="col-lg-12">
       <h4>Authors</h4>      
-      <p id="author"></p>
+      <a id="author" href="profile_template_signedin.html">Author</a>
       <hr>
     </div>
     <div id="project-collaborators" class="col-lg-12">
