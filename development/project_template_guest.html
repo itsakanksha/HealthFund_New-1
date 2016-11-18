@@ -52,6 +52,70 @@
   }
 
   function initApp() {
+    var a = window.location.toString();
+    var project_name = a.substring(a.indexOf("=")+1);
+    var doc_context = document.getElementById("context");
+    var doc_title = document.getElementById("title");
+    var doc_img = document.getElementById("source-image");
+    var doc_description = document.getElementById("description");
+    var doc_significance = document.getElementById("significance");
+    var doc_goals = document.getElementById("goals");
+    var doc_author = document.getElementById("author");
+    var doc_collaborators = document.getElementById("collaborators");
+    var project_ref = firebase.database().ref('projects/' + project_name);
+    project_ref.on('value', function(snapshot) {
+      var context = snapshot.val().context;
+      if (context != null)
+        doc_context.innerHTML = context;
+      else
+        doc_context.innerHTML = "To be updated!";
+
+      var title = snapshot.val().title;
+      if (title != null)
+        doc_title.innerHTML = title;
+      else
+        doc_title.innerHTML = "To be updated!";
+
+      var description = snapshot.val().description;
+      if (description != null)
+        doc_description.innerHTML = description;
+      else
+        doc_description.innerHTML = "To be updated!";
+
+      var significance = snapshot.val().significance;
+      if (significance != null)
+        doc_significance.innerHTML = significance;
+      else
+        doc_significance.innerHTML = "To be updated!";
+
+      var goals = snapshot.val().goals;
+      if (goals != null)
+        doc_goals.innerHTML = goals;
+      else
+        doc_goals.innerHTML = "To be updated!";
+
+      var collaborators = snapshot.val().collaborators;
+      if (collaborators != null)
+        doc_collaborators.innerHTML = collaborators;
+      else
+        doc_collaborators.innerHTML = "To be updated!";
+
+      var author = snapshot.val().author;
+      if (author != null)
+        firebase.database().ref('/users/' + author).once('value').then(function(snapshot) {
+          var authorname = snapshot.val().fullname;
+          doc_author.innerHTML = authorname;
+        });
+
+      else
+        doc_author.innerHTML = "To be updated!";
+
+      var image = snapshot.val().projImg;
+      if (image !=null)
+        doc_img.setAttribute("src", image);
+
+    });
+
     // Listening for auth state changes.
     // [START authstatelistener]
     firebase.auth().onAuthStateChanged(function(user) {
@@ -143,80 +207,73 @@
         <!-- /.container -->
     </nav>
 
-    <!-- Page Content -->
-    <div class="container">
+    
+  <!-- Page Content -->
+  <div class="container">
 
-        
-        <!-- Page Header -->
-        <div class="row">
-            <div class="col-lg-12">
-                <h3>Mathematical Model To Reduce Maternal And Infant Mortality In Southeast Asia</h3>
-                <hr>
-            </div>
-        </div> 
-        <!-- /.row -->
-        <!-- Projects Row -->
 
-        <div class="row">
-            <div id="project-image" class="col-lg-12">
-            <div class="project_image"><img src="images/mortality.jpg" alt="" style="max-height: 200px;" /> </div>    
-            <hr>
-            </div>
-            <div id="project-writeup" class="col-lg-12">
-                <h4>Description</h4>      
-                <p>Maternal and child mortality in Southeast Asian countries is still very high, especially in poor and rural areas. The goal of our study is to develop user-friendly mathematical model to improve referral of high-risk term pregnancies in resource-poor settings; creating a more resource-efficient health system, while delivering better health outcomes to mothers and children. <br /><br />
-                <b>Context of This Research</b><br />
-                The poor quality of antenatal, delivery and postnatal health care services is a major barrier to reducing maternal and child deaths. Across all population groups, the coverage relating to service quality, quantity, and access consistently score very low. <br/>
+    <!-- Page Header -->
+    <div class="row">
+      <div class="col-lg-12">
+        <h3 id="title"></h3>
+        <hr>
+      </div>
+    </div> 
+    <!-- /.row -->
+    <!-- Projects Row -->
 
-                For example, of 2,100 obstetrician-gynaecologists (OB -GYN) in Indonesia, more than half practice in Java. This disparity causes limited quantity of human health resources in rural and underdeveloped areas. <br />
+    <div class="row">
+      <div id="project-image" class="col-lg-12">
+        <center>
+          <div class="project_image"><img id="source-image" src="" alt="Project image url uploaded is incorrect!" style="max-height: 200px;width: 100%;" /> </div>  
+        </center>  
+        <hr>
+      </div>
+      <div id="project-writeup" class="col-lg-12">
+        <h4>Description</h4>      
+        <p id="description"></p>
+        <b>Context of This Research</b><br />
+        <p id="context"></p>
 
-                With the relatively few resources and inadequate local capacities, knowledge of referral conditions should be strategically strengthened to promote appropriate use of these facilities.<br /><br />
+        <b>Significance</b><br />
 
-                <b>Significance</b><br />
+        <p id="significance"></p>
 
-                Currently, our ability to define such a fetus with growth restriction (<2500 g) and macrosomia (>4000 g) for referral is limited. The most commonly used method is the Johnson-Toshach formula, especially in primary care setting where there’s no ultrasonography facility. However, various studies show that Johnson-Toshach is inaccurate. Effective screening of those with high-risk term pregnancies requires better precision for timely referral to the higher level facilities.<br />
+        <b>Goals of the project</b><br />
 
-                There is a need for a formula that does better than Johnson-Toshach in accurately predicting fetal weight on strategies to detect high risk pregnancies and accurate referral system while minimizing unnecessary referrals.<Br />
-
-                This will make healthcare delivery more efficient: saving lives and reducing costs.<br /><br />
-
-                <b>Goals of the project</b><br />
-
-                Given this knowledge gap, we would like to develop an improved mathematical model, more accurate and easier to use, to better predict fetal weights at risk in Southeast Asia. This study sought to take into account the field’s constraints, such as births in primary care, or attended only by traditional birth attendants or family members. <br />
-
-                The lack of resources and advanced facilities’ setting, make it even more important to be able to detect high risk pregnancies with accurate and efficient formula, which is fundamental for high quality antenatal care.</p> 
-                <hr>
-            </div>
-            <div id="funds-received" class="col-lg-12">
-                <h4>Funds Received</h4>      
-                <div class="progress">
-                  <div class="progress-bar" role="progressbar" aria-valuenow="40"
-                  aria-valuemin="0" aria-valuemax="100" style="width:40%">
-                    $7000
-                  </div>
-
-                </div>
-
-                <div style="float: left;">$0</div><div style="float: right">$25,000+</div><br />
-                <hr>
-            </div>
-            <div id="project-authors" class="col-lg-12">
-                <h4>Authors</h4>      
-                <p><a href="LINK TO THER PROFILE">Christian Suharlim</a> and <a href="LINK TO THEIR PROFILE">Novita Liman</a></p>
-            <hr>
-            </div>
-            <div id="project-collaborators" class="col-lg-12">
-                <h4>Collaborators</h4>      
-                <p><a href="LINK TO THER PROFILE">Denny Luan</a>, <a href="LINK TO THER PROFILE">Seawris Pinnan</a>, <a href="LINK TO THER PROFILE">Andrew Wong</a>, Dana Rye, Stella Margaretha</p> 
-                <!-- SOME USERS MAY NOT HAVE PROFILES ON THIS APP SO NO LINK FOR THEM! -->
-                <hr>
-            </div>
-            <div id="how-to-donate" class="col-lg-12">
-                <h4>How To Donate?</h4> 
-                <p>We believe that investors and donors might feel more secure if they pay the researchers and scientists directly, instead of paying through a third party website. You can read more about the authors by clicking on their names above and finding their contact information on their profiles. If their work has interested you, feel free to reach out to them to discuss this project and any donations you'd like to make.</p>   
-            </div>
+        <p id="goals"></p> 
+        <hr>
+      </div>
+      <div id="funds-received" class="col-lg-12">
+        <h4>Funds Received</h4>      
+        <div class="progress">
+          <div class="progress-bar" role="progressbar" aria-valuenow="40"
+          aria-valuemin="0" aria-valuemax="100" style="width:40%">
+          $7000
         </div>
-    <!-- /.container -->
+
+      </div>
+
+      <div style="float: left;">$0</div><div style="float: right">$25,000+</div><br />
+      <hr>
+    </div>
+    <div id="project-authors" class="col-lg-12">
+      <h4>Authors</h4>      
+      <p id="author"></p>
+      <hr>
+    </div>
+    <div id="project-collaborators" class="col-lg-12">
+      <h4>Collaborators</h4>      
+      <p id="collaborators"></p> 
+      <!-- SOME USERS MAY NOT HAVE PROFILES ON THIS APP SO NO LINK FOR THEM! -->
+      <hr>
+    </div>
+    <div id="how-to-donate" class="col-lg-12">
+      <h4>How To Donate?</h4> 
+      <p>We believe that investors and donors might feel more secure if they pay the researchers and scientists directly, instead of paying through a third party website. You can read more about the authors by clicking on their names above and finding their contact information on their profiles. If their work has interested you, feel free to reach out to them to discuss this project and any donations you'd like to make.</p>   
+      </div>
+    </div>
+  <!-- /.container -->
 
     <!-- jQuery -->
     <script src="js/jquery.js"></script>

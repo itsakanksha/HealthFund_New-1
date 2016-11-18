@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
 
-    <title>HealthFund | Connecting Researchers with Investors and Patients</title>
-
+  <title>HealthFund | Connecting Researchers with Investors and Patients</title>
 
   <!-- Bootstrap Core CSS -->
   <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -37,7 +36,37 @@
       messagingSenderId: "370511046282"
     };
     firebase.initializeApp(config);
-  </script>
+    </script>
+
+  <style>
+    div.img {
+      border: 1px solid #ccc;
+      margin-top: 10px;
+      /*float: left;*/
+      width: 100%;
+    }
+
+    div.img:hover {
+      border: 1px solid #777;
+    }
+
+    div.img img {
+      width: 80%;
+      margin-top: 10px;
+      height: auto;
+    }
+
+    div.tit {
+      padding: 5px;
+      text-align: center;
+      font-size: 25px;
+    }
+    div.desc {
+      padding: 5px;
+      margin: 5px;
+      text-align: center;
+    }
+  </style>
 
   <script>
 
@@ -52,10 +81,14 @@
   function initApp() {
     // Listening for auth state changes.
     // [START authstatelistener]
+
+
+
     firebase.auth().onAuthStateChanged(function(user) {
       // [START_EXCLUDE silent]
       // [END_EXCLUDE]
       if (user) {
+          
         // User is signed in.
         /*
         var userID = user.uid;
@@ -99,16 +132,55 @@
         */
       } else {
           // User is signed out.
+
       }
         // [START_EXCLUDE silent]
         // [END_EXCLUDE]
     });
-      // [END authstatelistener]
-    document.getElementById('quickstart-sign-out').addEventListener('click', signOut);
   }
 
   window.onload = function() {
       initApp();
+      console.log("here");
+      var projectRef = firebase.database().ref('projects/').orderByKey();
+          projectRef.once("value")
+          .then(function(snapshot) {
+            snapshot.forEach(function(childSnapshot){
+              var project = childSnapshot.val();
+              var new_project = document.createElement('div');
+              new_project.style.borderWidth = "0";
+              new_project.setAttribute("class", "img");
+              var project_image = document.createElement("img");
+              project_image.setAttribute("src", project.projImg);
+              project_image.setAttribute("alt", "New project");
+              project_image.setAttribute("width", "100");
+              project_image.setAttribute("height","200");
+              var to_center = document.createElement('center');
+              to_center.appendChild(project_image);
+              new_project.appendChild(to_center);
+
+              var new_title = document.createElement('div');
+              new_title.setAttribute("class", "tit");
+              new_title.appendChild(document.createTextNode(project.title));
+              var new_description = document.createElement('div');
+              new_description.setAttribute("class", "desc");
+              new_description.style.textAlign = "justify";
+              new_description.appendChild(document.createTextNode(project.description));
+              var project_link = document.createElement('a');
+              var linkID = childSnapshot.key;
+              var strLink = "project_template_guest.html" + "?key=" + linkID;
+              project_link.setAttribute("href",strLink);
+              project_link.style.borderWidth = "0";
+              project_link.appendChild(new_title);
+              new_project.appendChild(project_link);
+              new_project.appendChild(new_description);
+              var portfolio = document.getElementById("portfolio");
+              portfolio.appendChild(new_project);
+              var HR = document.createElement("HR");
+              new_project.appendChild(HR);
+              });
+      });
+      console.log("here again");
   };
 </script>
 
@@ -132,7 +204,7 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li>
-                        <a href="home_guest.html">Home</a>
+                        <a href="home_guest.html">Discover Projects</a>
                     </li>
                     <li>
                         <a href="help_guest.html">Help</a>
@@ -151,85 +223,24 @@
     </nav>
 
     <!-- Page Content -->
-    <div class="container"> 
-        <!-- Page Header -->
-        <div class="row">
-            <div class="col-lg-12">
-                <h3>Discover Projects</h3>
-                <hr>
-            </div>
-        </div> 
-        <!-- /.row -->
-        <!-- Projects Row -->
-        <div class="row">
-            <div class="col-md-6 portfolio-item">
-                <a href="#">
-                    <img class="img-responsive" src="images/batten.jpg" alt="">
-                </a>
-                <h3>
-                    <a href="#">Finding a Cure for Batten Disease</a>
-                </h3>
-                <div class="info">
-                <p>In March of this year, both of our daughters, Charlotte and Gwenyth, were diagnosed with Late Infantile NCL Batten Disease CLN6...</p>
-                </div>
-            </div>
-            <div class="col-md-6 portfolio-item">
-                <a href="#">
-                    <img class="img-responsive" src="images/zikavirus.jpg" alt="">
-                </a>
-                <h3>
-                    <a href="#">Does Zika virus replicate in neural cells?</a>
-                </h3>
-                <div class="info">
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
-                </div>
-            </div>
+    <div class="container" id="portfolio">
+
+      <!-- Page Header -->
+      <div class="row">
+        <div class="col-lg-12">
+          <h3>Discover Projects</h3>
+          <hr>
         </div>
-        <!-- /.row -->
+      </div> 
 
-        <!-- Projects Row -->
-        <div class="row">
-            <div class="col-md-6 portfolio-item">
-                <a href="#">
-                    <img class="img-responsive" src="images/mortality.jpg" alt="">
-                </a>
-                <h3>
-                    <a href="#">Mathematical model to reduce maternal and infant mortality in Southeast Asia</a>
-                </h3>
+  </div>
+  <hr>
 
-                <div class="info">
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
-                </div>
-            </div>
-            <div class="col-md-6 portfolio-item">
-                <a href="#">
-                    <img class="img-responsive" src="images/spinalcord.jpg" alt="">
-                </a>
-                <h3>
-                    <a href="#">Affordable 3D-Printed Neural Devices for Spinal Cord Regeneration</a>
-                </h3>
-
-                <div class="info">
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
-                </div>
-            </div>
-        </div>
-        <!-- /.row -->
-
-        <hr>
-
-        <!-- Footer -->
-        <footer>
-            <div class="row">
-                <div class="col-lg-12">
-                    <p>Copyright &copy; HealthFund 2016</p>
-                </div>
-            </div>
-            <!-- /.row -->
-        </footer>
-
+  <div class="row">
+    <div class="col-lg-12">
+      <center><p>Copyright &copy; HealthFund 2016</p></center>
     </div>
-    <!-- /.container -->
+  </div>
 
     <!-- jQuery -->
     <script src="js/jquery.js"></script>

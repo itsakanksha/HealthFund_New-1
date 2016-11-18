@@ -128,18 +128,20 @@ tr.spaceUnder > td
 }
 
 .create {
-	width: 40%;
+	width: 60%;
 	background-color: #aad2d5;
 	position: relative;
 	min-height: 1px;
 	padding-right: 15px;
 	padding-left: 15px;
 	padding-top: 3px;
+	padding-bottom: 3px;
 	margin-bottom: 20px;
-	height: 28px;
+	min-height: 28px;
 	color: #fff;
 	border-radius: 5px;
 	border: 1px solid #aad2d5;
+	word-wrap: normal;
 }
 
 .create:hover {
