@@ -125,8 +125,29 @@
       initApp();
     };
   </script>
+  <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+  <script type="text/javascript"> 
+    $(document).ready( function() {
+      $('#deletesuccess').delay(1800).fadeOut();
+        $('#showsuccess').delay(2300).fadeIn();
+    });
+  </script>
+  <style type="text/css">
+  #showsuccess {
+    display: none;
+  }
+
+  #deletesuccess {
+    position: absolute;
+    top: 30%;
+    left: 0;
+    right: 0;
+    margin-top: -9px;
+  }
+  </style>
 </head>
 <body>
+  <div id="showsuccess">
   <!-- Navigation -->
   <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container">
@@ -178,7 +199,9 @@
     <!-- /.row -->
   </div>
   <!-- /.container -->
+  </div>
 
+  <div id="deletesuccess"><center><img src="healthfolio.png" alt="" style="width: 100%; height: auto; padding: 10%;" /><img src="load1.gif" alt="" style="width: 80%; height: auto;" /></center></div>
   <!-- jQuery -->
   <script src="./development/js/jquery.js"></script>
 
