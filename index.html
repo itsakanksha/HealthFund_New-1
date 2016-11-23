@@ -1,21 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
 
-    <title>HealthFund | Connecting Researchers with Investors and Patients</title>
+  <title>HealthFund | Connecting Researchers with Investors and Patients</title>
 
-    <!-- Bootstrap Core CSS -->
-    <link href="./development/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Core CSS -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Custom CSS -->
-    <link href="./development/css/2-col-portfolio.css" rel="stylesheet">
-    <link href="./development/css/custom.css" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link href="css/2-col-portfolio.css" rel="stylesheet">
+  <link href="css/custom.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/stylesheet.css">
+  <link href="jquery-ui.css" rel="stylesheet">
 
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+  <script src="js/jquery.min.js"></script>
+  <script src="./dist/js/standalone/selectize.js"></script>
+  <script src="js/index.js"></script>
   <script src="https://www.gstatic.com/firebasejs/3.6.0/firebase.js"></script>
   <script>
     // Initialize Firebase
@@ -27,163 +36,208 @@
       messagingSenderId: "370511046282"
     };
     firebase.initializeApp(config);
-  </script>
+    </script>
+
+  <style>
+    body {
+      background-color: #FFF;
+    }
+
+    div.img {
+      box-shadow: 0px 2px 5px #ccc;
+      margin-top: 10px;
+      width: 93%;
+      margin: 0 auto;
+      padding: 2%;
+      margin-bottom: 10px;
+    }
+
+    div.img:hover {
+      box-shadow: 0px 2px 5px #aaa;
+    }
+
+    div.img img {
+      width: 100%;
+      margin-top: 10px;
+      height: auto;
+    }
+
+    div.tit {
+      padding: 5px;
+      margin: 5px;
+      text-align: left;
+      font-size: 20px;
+    }
+    div.desc {
+      padding: 5px;
+      margin: 5px;
+      text-align: center;
+      overflow:hidden;
+      white-space:nowrap;
+      text-overflow: ellipsis;
+    }
+
+    #splashscreen {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-50%);
+    }
+
+    #item1, #item2 {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-50%);
+    }
+
+    #main_content {
+      display: none;
+    }
+  </style>
+
+  <script>
+
+  function signOut(){
+      firebase.auth().signOut().then(function() {
+          console.log('Signed Out');
+      }, function(error) {
+          console.error('Sign Out Error', error);
+      });
+  }
+
+  function initApp() {
+
+    firebase.auth().onAuthStateChanged(function(user) {
+
+      if (user) {
+      } else {
+      }
+    });
+  }
+
+  window.onload = function() {
+      initApp();
+      console.log("here");
+      var projectRef = firebase.database().ref('projects/').orderByKey();
+          projectRef.once("value")
+          .then(function(snapshot) {
+            snapshot.forEach(function(childSnapshot){
+              var project = childSnapshot.val();
+              var new_project = document.createElement('div');
+              new_project.setAttribute("class", "img");
+              var project_image = document.createElement("img");
+              project_image.setAttribute("src", project.projImg);
+              project_image.setAttribute("alt", "New project");
+              project_image.setAttribute("width", "100");
+              project_image.setAttribute("height","200");
+              var to_center = document.createElement('center');
+              to_center.appendChild(project_image);
+              new_project.appendChild(to_center);
+
+              var new_title = document.createElement('div');
+              new_title.setAttribute("class", "tit");
+              new_title.appendChild(document.createTextNode(project.title));
+              var new_description = document.createElement('div');
+              new_description.setAttribute("class", "desc");
+              new_description.style.textAlign = "justify";
+              var desc_text = document.createTextNode(project.description);
+              new_description.appendChild(desc_text);
+              var project_link = document.createElement('a');
+              var linkID = childSnapshot.key;
+              var strLink = "project_template_guest.html" + "?key=" + linkID;
+              project_link.setAttribute("href",strLink);
+              project_link.style.borderWidth = "0";
+              project_link.appendChild(new_title);
+              new_project.appendChild(project_link);
+              new_project.appendChild(new_description);
+              var portfolio = document.getElementById("portfolio");
+              portfolio.appendChild(new_project);
+              });
+      });
+      console.log("here again");
+  };
+</script>
 
   <script type="text/javascript">
-
-    /**
-     * Handles the sign in button press.
-     */
-    function toggleSignIn() {
-      if (firebase.auth().currentUser) {
-        // [START signout]
-        firebase.auth().signOut();
-        // [END signout]
-      } else {
-        var email = document.getElementById('email').value;
-        var password = document.getElementById('password').value;
-        if (email.length < 4) {
-          alert('Please enter an email address.');
-          return;
-        }
-        if (password.length < 4) {
-          alert('Please enter a password.');
-          return;
-        }
-        // Sign in with email and pass.
-        // [START authwithemail]
-        firebase.auth().signInWithEmailAndPassword(email, password)
-        .then(function(user) {
-          window.location.href = "./development/home_signedin.html";
-        })
-        .catch(function(error) {
-          // Handle Errors here.
-          var errorCode = error.code;
-          var errorMessage = error.message;
-          // [START_EXCLUDE]
-          if (errorCode === 'auth/wrong-password') {
-            alert('Wrong password.');
-          } else {
-            alert(errorMessage);
-          }
-          console.log(error);
-          // [END_EXCLUDE]
-        });
-
-        // [END authwithemail]
-      }      
-    }
-
-    /**
-     * Sends an email verification to the user.
-     */
-    function sendEmailVerification() {
-      // [START sendemailverification]
-      firebase.auth().currentUser.sendEmailVerification().then(function() {
-        // Email Verification sent!
-        // [START_EXCLUDE]
-        alert('Email Verification Sent!');
-        // [END_EXCLUDE]
-      });
-      // [END sendemailverification]
-    }
-
-    function sendPasswordReset() {
-      var email = document.getElementById('email').value;
-      // [START sendpasswordemail]
-      firebase.auth().sendPasswordResetEmail(email).then(function() {
-        // Password Reset Email Sent!
-        // [START_EXCLUDE]
-        alert('Password Reset Email Sent!');
-        // [END_EXCLUDE]
-      }).catch(function(error) {
-        // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        // [START_EXCLUDE]
-        if (errorCode == 'auth/invalid-email') {
-          alert(errorMessage);
-        } else if (errorCode == 'auth/user-not-found') {
-          alert(errorMessage);
-        }
-        console.log(error);
-        // [END_EXCLUDE]
-      });
-      // [END sendpasswordemail];
-    }
-
-    /**
-     * initApp handles setting up UI event listeners and registering Firebase auth listeners:
-     *  - firebase.auth().onAuthStateChanged: This listener is called when the user is signed in or
-     *    out, and that is where we update the UI.
-     */
-    function initApp() {
-      document.getElementById('quickstart-sign-in').addEventListener('click', toggleSignIn);
-    }
-
-    window.onload = function() {
-      initApp();
-    };
+    $(document).ready(function(){
+      $("#splashscreen").delay(2000).fadeOut();
+      $("#main_content").delay(2400).fadeIn();
+    });
   </script>
+
 </head>
 <body>
-  <!-- Navigation -->
-  <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-      <div class="container">
-          <!-- Brand and toggle get grouped for better mobile display -->
-          <div class="navbar-header">
-              <a class="navbar-brand" href="#">HealthFund</a>
-          </div>
+    <div id="splashscreen">
+        <div id="item1">
+        <img src="images/loading.gif" style="z-index: -10; height: 350px; width: auto;" />
       </div>
-      <!-- /.container -->
-  </nav>
+      <div id="item2">
+        <img src="images/logo_header.png" style="z-index: 10; width: 250px; height: auto;" />
+      </div>
+    </div>
 
-  <!-- Page Content -->
-  <div class="container">
-    <!-- Page Header -->
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="child">
-                <center>
-                    <table>
-                        <tr>
-                            <td>E-mail:
-                            </td>
-                            <td><input type="text" id="email">
-                            </td>
-                        </tr>
-                        <tr><td><br /></td></tr>
-                        <tr>
-                            <td style="padding-right: 35px;">Password:
-                            </td>
-                            <td><input type="password" id="password">
-                            </td>
-                        </tr>
-                    </table>
-                    <br /><br />
-                    <a href="#"><div class="login_button" id="quickstart-sign-in">SIGN IN</div></a><br />
-                    <br /><br />
-                    <table>
-                        <tr>
-                            <td style="padding-right: 35px;"><a href="./development/signup.html"><div class="login_button">SIGN UP</div></a>
-                            </td>
-                            <td><a href="./development/home_guest.html"><div class="login_button">SKIP</div></a>
-                            </td>
-                        </tr>
-                    </table>
-                </center>
+    <div id="main_content">
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>          
+                <a class="navbar-brand" href="index.html"><img src="images/logo.png" alt="" style="max-height: 30px; width: auto; float: left; margin-right: 10px; margin-top: -5px;" /><strong>HEALTH</strong>FUND</a>
             </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="index.html">Discover Projects</a>
+                    </li>
+                    <li>
+                        <a href="help_guest.html">Help</a>
+                    </li>
+                    <li>
+                        <a href="about_guest.html">About</a>
+                    </li>
+                    <li>
+                        <a href="signin.html">Sign In</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
         </div>
-    </div> 
-    <!-- /.row -->
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container" id="portfolio">
+
+      <!-- Page Header -->
+      <div class="row">
+        <div class="col-lg-12">
+          <h4 style="text-transform: uppercase; margin-bottom: -10px;"><strong>Discover</strong> Projects</h4><hr>
+        </div>
+      </div> 
+
   </div>
-  <!-- /.container -->
+  <hr>
 
-  <!-- jQuery -->
-  <script src="./development/js/jquery.js"></script>
+  <div class="row">
+    <div class="col-lg-12">
+      <center><p>Copyright &copy; HealthFund 2016</p></center>
+    </div>
+  </div>
+  </div>
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
 
-  <!-- Bootstrap Core JavaScript -->
-  <script src="./development/js/bootstrap.min.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
 
 </body>
+
 </html>

@@ -18,63 +18,10 @@
     <link href="css/2-col-portfolio.css" rel="stylesheet">
     <link href="css/custom.css" rel="stylesheet">
 
-    <link rel="stylesheet" href="css/normalize.css">
-    <link rel="stylesheet" href="css/stylesheet.css">
-    <link href="jquery-ui.css" rel="stylesheet">
-
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
-    <script src="js/jquery.min.js"></script>
-    <script src="./dist/js/standalone/selectize.js"></script>
-    <script src="js/index.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/3.6.0/firebase.js"></script>
-    <script>
-      // Initialize Firebase
-      var config = {
-        apiKey: "AIzaSyDbJUBMk1sZD-XGvQFTt4VV-M10H4mZ1Ek",
-        authDomain: "healthfund-2d39b.firebaseapp.com",
-        databaseURL: "https://healthfund-2d39b.firebaseio.com",
-        storageBucket: "healthfund-2d39b.appspot.com",
-        messagingSenderId: "370511046282"
-    };
-    firebase.initializeApp(config);
-    </script>
-
-<script>
-        
-    function signOut(){
-        firebase.auth().signOut().then(function() {
-            console.log('Signed Out');
-            window.location.href="../index.html";
-        }, function(error) {
-            console.error('Sign Out Error', error);
-        });
-    }
-
-     function initApp() {
-
-      firebase.auth().onAuthStateChanged(function(user) {
-        if (user) {
-        } else {
-          window.location.href="../index.html";
-        }
-
-      });
-      // [END authstatelistener]
-      document.getElementById('quickstart-sign-out').addEventListener('click', signOut);
-  }
-
-  window.onload = function() {
-      initApp();
-  };
-</script>
-
 </head>
 
 <body>
-
-    <!-- Navigation -->
+<!-- Navigation -->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
@@ -85,28 +32,22 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">HealthFund</a>
+                <a class="navbar-brand" href="index.html"><img src="images/logo.png" alt="" style="max-height: 30px; width: auto; float: left; margin-right: 10px; margin-top: -5px;" /><strong>HEALTH</strong>FUND</a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav">
+                <ul class="nav navbar-nav">
                     <li>
-                        <a href="home_signedin.html">Discover Projects</a>
+                        <a href="index.html">Discover Projects</a>
                     </li>
                     <li>
-                        <a href="myaccount.html">My Account</a>
+                        <a href="help_guest.html">Help</a>
                     </li>
                     <li>
-                        <a href="myprojects.html">My Projects</a>
+                        <a href="about_guest.html">About</a>
                     </li>
                     <li>
-                        <a href="help_signedin.html">Help</a>
-                    </li>
-                    <li>
-                        <a href="about_signedin.html">About</a>
-                    </li>
-                    <li>
-                        <a href="#" id="quickstart-sign-out">Sign Out</a>
+                        <a href="signin.html">Sign In</a>
                     </li>
                 </ul>
             </div>
@@ -117,13 +58,11 @@
 
     <!-- Page Content -->
     <div class="container">
-
         
         <!-- Page Header -->
         <div class="row">
             <div class="col-lg-12">
-                <h3>Help</h3>
-                <hr>
+              <h4 style="text-transform: uppercase; margin-bottom: -10px;"><strong>HELP</strong></h4><hr>
             </div>
         </div> 
         <!-- /.row -->
@@ -144,10 +83,7 @@
                 Backers that support a project on HealthFund get an inside look at the creative process, and help that project come to life. They also get to choose from a variety of unique rewards offered by the project creator.<br />
                  Rewards vary from project to project, but often include a copy of what is being produced or an experience unique to the project. 
                 Project creators keep 100% ownership of their work, and HealthFund cannot be used to offer equity, financial returns, or to solicit loans.<br /><br />
-                <b>6. What are the fees?</b> <br />
-                If a project is successfully funded, HealthFund applies a 5% fee to the funds collected for creators. Our payments processor will also apply payment processing fees (roughly 3-5%). 
-                If funding isn't successful, there are no fees. <br /><br />
-                <b>7. HealthFund Base?</b> <br />
+                <b>6. HealthFund Base?</b> <br />
                 We are an independent company based in San Diego, California. We spend our time improving the site, answering questions from backers and creators, and finding great new projects to share with you. Every day is an adventure — we get to experience projects as they happen! Say Hello or come work with us! 
                  
                 </p>
@@ -156,7 +92,7 @@
         <!-- /.row -->
 
     </div>
-    <!-- /.container -->
+    <!-- /.container-->
 
     <!-- jQuery -->
     <script src="js/jquery.js"></script>
