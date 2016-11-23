@@ -1,17 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
+  <title>HealthFund | Connecting Researchers with Investors and Patients</title>
 
-    <title>HealthFund | Connecting Researchers with Investors and Patients</title>
-
-<!-- Bootstrap Core CSS -->
+  <!-- Bootstrap Core CSS -->
   <link href="css/bootstrap.min.css" rel="stylesheet">
 
   <!-- Custom CSS -->
@@ -105,6 +103,8 @@
         firebase.database().ref('/users/' + author).once('value').then(function(snapshot) {
           var authorname = snapshot.val().fullname;
           doc_author.innerHTML = authorname;
+          var strlink = "profile_template_template.html" + "?key=" + author;
+          doc_author.setAttribute("href", strlink);
         });
 
       else
@@ -112,7 +112,10 @@
 
       var image = snapshot.val().projImg;
       if (image !=null)
+      {
         doc_img.setAttribute("src", image);
+        doc_img.setAttribute("style", "width: 100%; height: auto");
+      }
 
     });
 
@@ -171,8 +174,7 @@
 </head>
 
 <body>
-
-    <!-- Navigation -->
+<!-- Navigation -->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
@@ -182,15 +184,14 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
-        </button>
-      <img style="display: inline;" src="logo.png" alt="logo" height="20%" width="18%"  />
-        <a class="navbar-brand" href="#">HealthFund</a>
-      </div>
+                </button>
+                <a class="navbar-brand" href="index.html"><img src="images/logo.png" alt="" style="max-height: 30px; width: auto; float: left; margin-right: 10px; margin-top: -5px;" /><strong>HEALTH</strong>FUND</a>
+            </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li>
-                        <a href="home_guest.html">Discover Projects</a>
+                        <a href="index.html">Discover Projects</a>
                     </li>
                     <li>
                         <a href="help_guest.html">Help</a>
@@ -199,7 +200,7 @@
                         <a href="about_guest.html">About</a>
                     </li>
                     <li>
-                        <a href="../index.html">Sign In</a>
+                        <a href="signin.html">Sign In</a>
                     </li>
                 </ul>
             </div>
@@ -226,12 +227,13 @@
     <div class="row">
       <div id="project-image" class="col-lg-12">
         <center>
-          <div class="project_image"><img id="source-image" src="" alt="Project image url uploaded is incorrect!" style="" /> </div>  
+          <div class="project_image"><img id="source-image" src="" alt="Project image url uploaded is incorrect!" style="height: auto;width: 100%;"/> </div>  
+
         </center>  
         <hr>
       </div>
       <div id="project-writeup" class="col-lg-12">
-        <h4>Description</h4>      
+        <h4>Description</h4>    <br />  
         <p id="description"></p>
         <b>Context of This Research</b><br />
         <p id="context"></p>
@@ -245,40 +247,23 @@
         <p id="goals"></p> 
         <hr>
       </div>
-      <!-- <div id="funds-received" class="col-lg-12">
-        <h4>Funds Received</h4>      
-        <div class="progress">
-          <div class="progress-bar" role="progressbar" aria-valuenow="40"
-          aria-valuemin="0" aria-valuemax="100" style="width:40%">
-          $7000
-        </div>
-
+      <div id="project-authors" class="col-lg-12">
+        <h4>Authors</h4>      
+        <p id="author"></p>
+        <hr>
       </div>
-
-      <div style="float: left;">$0</div><div style="float: right">$25,000+</div><br />
-      <hr>
-    </div> -->
-    <div id="project-authors" class="col-lg-12">
-      <h4>Authors</h4>      
-      <p id="author"></p>
-      <hr>
+      <div id="project-collaborators" class="col-lg-12">
+        <h4>Collaborators</h4>      
+        <p id="collaborators"></p> 
+        <!-- SOME USERS MAY NOT HAVE PROFILES ON THIS APP SO NO LINK FOR THEM! -->
+        <hr>
+      </div>
+      <div id="how-to-donate" class="col-lg-12">
+        <h4>How To Donate?</h4> 
+        <p>We believe that investors and donors feel more secure if they pay the researchers/scientists through direct means instead of paying through a third party app. You can read more about the scientists by clicking on their names above and finding their contact information on their profiles. If their work has captured your interest, please contact the scientists directly to discuss this project by e-mailing them a signed copy of the <a href="NDA.html">Non-Disclosure Agreement</a>.</p>   
+      </div>
     </div>
-    <div id="project-collaborators" class="col-lg-12">
-      <h4>Collaborators</h4>      
-      <p id="collaborators"></p> 
-      <!-- SOME USERS MAY NOT HAVE PROFILES ON THIS APP SO NO LINK FOR THEM! -->
-      <hr>
-    </div>
-    <div id="how-to-donate" class="col-lg-12">
-      <h4>How To Donate?</h4> 
-      <p>Investors and donors will feel more secure if they pay the researchers/scientists through direct means, instead of paying through a third party. You can read more about the scientists by clicking on their names above and finding their contact information on their profiles. If their work captures one's interest, the scientists can be contacted directly to discuss this project and any donations one would like to make.</p>   
-                <hr>
-            </div class="col-lg-12">
-                <h4>Contact the Research Team</h4>  
-                <p><a href="https://codeinsuits.github.io/HealthFund_New/development/NDA.html">Non Disclosure Agreement</a> 
-                <p>For further inquiries about the project content please CONTACT the Research team Directly by emailing the signed NDA form</p> 
-                <p>THANK YOU and WE look forward to hear from YOU!!!</p>
-                <p></p>
+  </div>
   <!-- /.container -->
 
     <!-- jQuery -->

@@ -39,32 +39,60 @@
     </script>
 
   <style>
+    body {
+      background-color: #FFF;
+    }
+
     div.img {
-      border: 1px solid #ccc;
+      box-shadow: 0px 2px 5px #ccc;
       margin-top: 10px;
-      /*float: left;*/
-      width: 100%;
+      width: 93%;
+      margin: 0 auto;
+      padding: 2%;
+      margin-bottom: 10px;
     }
 
     div.img:hover {
-      border: 1px solid #777;
+      box-shadow: 0px 2px 5px #aaa;
     }
 
     div.img img {
-      width: 80%;
+      width: 100%;
       margin-top: 10px;
       height: auto;
     }
 
     div.tit {
       padding: 5px;
-      text-align: center;
-      font-size: 25px;
+      margin: 5px;
+      text-align: left;
+      font-size: 20px;
     }
     div.desc {
       padding: 5px;
       margin: 5px;
       text-align: center;
+      overflow:hidden;
+      white-space:nowrap;
+      text-overflow: ellipsis;
+    }
+
+    #splashscreen {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-50%);
+    }
+
+    #item1, #item2 {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-50%);
+    }
+
+    #main_content {
+      display: none;
     }
   </style>
 
@@ -79,63 +107,12 @@
   }
 
   function initApp() {
-    // Listening for auth state changes.
-    // [START authstatelistener]
-
-
 
     firebase.auth().onAuthStateChanged(function(user) {
-      // [START_EXCLUDE silent]
-      // [END_EXCLUDE]
+
       if (user) {
-          
-        // User is signed in.
-        /*
-        var userID = user.uid;
-        var email = user.email;
-        var userRef = firebase.database().ref('users/' + userID + '/projects').orderByKey();
-
-
-        var projRef = firebase.database().ref('projects').orderByKey();
-
-        var projectRow = document.getElementsByClassName("row");
-        var col = document.createElement("DIV");
-        col.className = "col-md-6 portfolio-item";
-
-        projRef.once("value")
-          .then(function(snapshot) {
-            snapshot.forEach(function(childSnapshot){
-
-                var projectID = childSnapshot.val();
-
-                var title = childSnapshot.child("title").val();
-                var description = childSnapshot.child("description").val();
-                var projImg = childSnapshot.child("projImg").val();
-
-                //
-
-                //project
-                var x = document.createElement("LI");
-                var link = document.createElement("a");
-                var titleNode = document.createTextNode(title);
-                var imgNode = document.createElement("IMG");
-                imgNode.setAttribute("src", projImg);
-
-                link.href="#";
-
-                x.appendChild(link);
-                link.appendChild(node);
-                projectList.appendChild(x);
-
-          });
-        }); 
-        */
       } else {
-          // User is signed out.
-
       }
-        // [START_EXCLUDE silent]
-        // [END_EXCLUDE]
     });
   }
 
@@ -148,15 +125,8 @@
             snapshot.forEach(function(childSnapshot){
               var project = childSnapshot.val();
               var new_project = document.createElement('div');
-              new_project.style.borderWidth = "0";
               new_project.setAttribute("class", "img");
-              var project_image = document.createElement("img");
-              project_image.setAttribute("src", project.projImg);
-              project_image.setAttribute("alt", "New project");
-              project_image.setAttribute("width", "100");
-              project_image.setAttribute("height","200");
               var to_center = document.createElement('center');
-              to_center.appendChild(project_image);
               new_project.appendChild(to_center);
 
               var new_title = document.createElement('div');
@@ -165,7 +135,8 @@
               var new_description = document.createElement('div');
               new_description.setAttribute("class", "desc");
               new_description.style.textAlign = "justify";
-              new_description.appendChild(document.createTextNode(project.description));
+              var desc_text = document.createTextNode(project.description);
+              new_description.appendChild(desc_text);
               var project_link = document.createElement('a');
               var linkID = childSnapshot.key;
               var strLink = "project_template_guest.html" + "?key=" + linkID;
@@ -176,17 +147,31 @@
               new_project.appendChild(new_description);
               var portfolio = document.getElementById("portfolio");
               portfolio.appendChild(new_project);
-              var HR = document.createElement("HR");
-              new_project.appendChild(HR);
               });
       });
       console.log("here again");
   };
 </script>
 
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $("#splashscreen").delay(2000).fadeOut();
+      $("#main_content").delay(2400).fadeIn();
+    });
+  </script>
+
 </head>
 <body>
+    <div id="splashscreen">
+        <div id="item1">
+        <img src="images/loading.gif" style="z-index: -10; height: 350px; width: auto;" />
+      </div>
+      <div id="item2">
+        <img src="images/logo_header.png" style="z-index: 10; width: 250px; height: auto;" />
+      </div>
+    </div>
 
+    <div id="main_content">
     <!-- Navigation -->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
@@ -197,15 +182,21 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
+<<<<<<< HEAD:development/home_guest.html
         </button>
       <img style="display: inline;" src="logo.png" alt="logo" height="20%" width="18%"  />
         <a class="navbar-brand" href="#">HealthFund</a>
       </div>
+=======
+                </button>          
+                <a class="navbar-brand" href="index2.html"><img src="images/logo.png" alt="" style="max-height: 30px; width: auto; float: left; margin-right: 10px; margin-top: -5px;" /><strong>HEALTH</strong>FUND</a>
+            </div>
+>>>>>>> temp:index2.html
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li>
-                        <a href="home_guest.html">Discover Projects</a>
+                        <a href="index2.html">Discover Projects</a>
                     </li>
                     <li>
                         <a href="help_guest.html">Help</a>
@@ -214,7 +205,7 @@
                         <a href="about_guest.html">About</a>
                     </li>
                     <li>
-                        <a href="../index.html">Sign In</a>
+                        <a href="signin.html">Sign In</a>
                     </li>
                 </ul>
             </div>
@@ -229,8 +220,7 @@
       <!-- Page Header -->
       <div class="row">
         <div class="col-lg-12">
-          <h3>Discover Projects</h3>
-          <hr>
+          <h4 style="text-transform: uppercase; margin-bottom: -10px;"><strong>Discover</strong> Projects</h4><hr>
         </div>
       </div> 
 
@@ -242,7 +232,7 @@
       <center><p>Copyright &copy; HealthFund 2016</p></center>
     </div>
   </div>
-
+  </div>
     <!-- jQuery -->
     <script src="js/jquery.js"></script>
 

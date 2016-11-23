@@ -45,29 +45,10 @@
 </script>
 
 <script>
-    // $('#NDA').submit(function (){
-    //     alert('iam here!')
-    //     if($('#agreement').checked){
-    //         $("#hidden_contact_info").show("slow");
-    //         $("#myModal").css({"display": "none"});
-    //     }
-    //     else{
-    //         alert("You need to check to agree first!");
-    //     }
-    //     return false;
-    // });
-
-    // function NDAClick(event)
-    // {
-    //     event.preventdefault();
-    //     $("#hidden_contact_info").show("slow");
-    //     $("#myModal").css({"display": "none"});
-    //     return false;
-    // }
     function signOut(){
         firebase.auth().signOut().then(function() {
             console.log('Signed Out');
-            window.location.href="../index.html";
+        window.location.href="index.html";
         }, function(error) {
             console.error('Sign Out Error', error);
         });
@@ -87,6 +68,7 @@
         var collaborations_onfile = document.getElementById("collaborations");
         var website_onfile = document.getElementById("website");
         var linkedin_onfile = document.getElementById("linkedin");
+        var name_title = document.getElementById("author_name");
           // Listening for auth state changes.
           // [START authstatelistener]
           firebase.auth().onAuthStateChanged(function(user) {
@@ -98,9 +80,15 @@
                 userRef.on('value', function(snapshot) {
                     var fullName = snapshot.val().fullname;
                     if (fullName != null)
+                    {
                       name_onfile.innerHTML = fullName;
-                  else
+                      name_title.innerHTML = fullName;
+                    }
+                    else
+                    {
                       name_onfile.innerHTML = "This Information does not exist!";
+                      name_title.innerHTML = "USER";
+                    }
 
                   var shortBio = snapshot.val().bio;
                   if (shortBio != null)
@@ -148,7 +136,7 @@
               });
             } else {
 
-                window.location.href="../index.html";
+        window.location.href="index.html";
             }
         });
           // [END authstatelistener]
@@ -243,10 +231,9 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
-        </button>
-      <img style="display: inline;" src="logo.png" alt="logo" height="20%" width="18%"  />
-        <a class="navbar-brand" href="#">HealthFund</a>
-      </div>
+                </button>
+                <a class="navbar-brand" href="index.html"><img src="images/logo.png" alt="" style="max-height: 30px; width: auto; float: left; margin-right: 10px; margin-top: -5px;" /><strong>HEALTH</strong>FUND</a>
+            </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
@@ -281,12 +268,11 @@
 
 
         <!-- Page Header -->
-        <div class="row">
+          <div class="row">
             <div class="col-lg-12">
-            <h3>Author's Profile</h3>
-                <hr>
+              <h4 style="text-transform: uppercase; margin-bottom: -10px;"><strong><span id="author_name"></span>'S</strong> PROFILE</h4><hr>
             </div>
-        </div> 
+          </div>  
         <!-- <div class="row">
             <div class="col-lg-12">
                 <center>
@@ -298,9 +284,7 @@
         <!-- /.row -->
         <div class="row">
             <div class="col-lg-12">
-
-                <div class="col-xs-9">
-                    <table>
+                    <table style="max-width: 100%;">
                         <tr class="spaceUnder">
                             <td>Name:</td>
                             <td id="name" name="fullname">{{name}}</td>
@@ -391,7 +375,6 @@
                 </tr>
             </table>
         </div> -->
-    </div>
 </div>
 </div> 
 </div>
