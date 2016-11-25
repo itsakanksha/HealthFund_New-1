@@ -135,6 +135,7 @@ valueOf()+(h?'&utmxhash='+escape(h.substr(1)):'')+
   function clickingProject() {
     console.log("clicked a project!");
     ga('send', 'event', 'project', 'click');
+    ga('send', 'event', )
   }
 
   window.onload = function() {
@@ -170,7 +171,7 @@ valueOf()+(h?'&utmxhash='+escape(h.substr(1)):'')+
               project_link.setAttribute("href",strLink);
               project_link.style.borderWidth = "0";
               project_link.appendChild(new_title);
-              project_link.onclick = clickingProject();
+              project_link.addEventListener("click", clickingProject);
               new_project.appendChild(project_link);
               new_project.appendChild(new_description);
               var portfolio = document.getElementById("portfolio");
