@@ -94,6 +94,38 @@
     #main_content {
       display: none;
     }
+
+    #search {
+      width: 93%;
+      margin: 0 auto;
+      margin-bottom: 20px;
+    }
+
+    #searchbox {
+      background-color: #FFF;
+      height: 30px;
+      border: 1px solid #999;
+      border-radius: 5px;
+      width: 80%;
+      padding: 5px;
+      color: #bbb;
+    }
+
+    #search_button {    
+      background-color: #0099ff; /* Green */
+      border: none;
+      color: white;
+      text-align: center;
+      padding: 6px;
+      padding-top: 8px;
+      padding-bottom: 8px;
+      width: 17%;
+      text-decoration: none;
+      display: inline;
+      font-size: 11px;
+      float: right;
+      border-radius: 5px;
+    }
   </style>
 
   <script>
@@ -227,6 +259,15 @@
       <div class="row">
         <div class="col-lg-12">
           <h4 style="text-transform: uppercase; margin-bottom: -10px;"><strong>Discover</strong> Projects</h4><hr>
+        </div>
+      </div> 
+
+      <div class="row">
+        <div class="col-lg-12">
+          <div id="search">
+            <input type="text" id="searchbox" placeholder="Search by Title or Author" />
+            <button type="button" id="search_button">SEARCH</button>
+          </div>
         </div>
       </div> 
 
