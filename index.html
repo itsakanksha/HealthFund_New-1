@@ -22,9 +22,8 @@
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-  <script src="js/jquery.min.js"></script>
-  <script src="dist/js/standalone/selectize.js"></script>
-  <script src="js/index.js"></script>
+  <!-- <script src="js/jquery.min.js"></script>
+  <script src="js/index.js"></script> -->
   <script src="https://www.gstatic.com/firebasejs/3.6.0/firebase.js"></script>
   <script>
     // Initialize Firebase
@@ -36,7 +35,7 @@
       messagingSenderId: "370511046282"
     };
     firebase.initializeApp(config);
-    </script>
+  </script>
 
   <style>
     body {
@@ -130,43 +129,27 @@
 
   <script>
 
-  function signOut(){
-      firebase.auth().signOut().then(function() {
-          console.log('Signed Out');
-      }, function(error) {
-          console.error('Sign Out Error', error);
-      });
-  }
+    function search(){
 
-  function initApp() {
 
-    firebase.auth().onAuthStateChanged(function(user) {
-
-      if (user) {
-      } else {
-      }
-    });
-  }
-
-  function clickingProject() {
-    console.log("clicked a project!");
-    ga('send', 'event', 'project', 'click');
-    ga('send', 'event', )
-  }
-
-  window.onload = function() {
-      initApp();
-      console.log("here");
-      var projectRef = firebase.database().ref('projects/').orderByKey();
-          projectRef.once("value")
-          .then(function(snapshot) {
-            snapshot.forEach(function(childSnapshot){
-              var project = childSnapshot.val();
+      var searchTerm = document.getElementById('searchbox').value;
+      if(searchTerm.length != 0){
+        $("#portfolio").empty();
+        var searchNotFound = true;
+        var projectRef = firebase.database().ref('projects/').orderByKey();
+        projectRef.once("value")
+        .then(function(snapshot) {
+          snapshot.forEach(function(childSnapshot){
+            var project = childSnapshot.val();
+            var project_title = project.title;
+            var project_author = project.author;
+            if ((project_title.toLowerCase().indexOf(searchTerm.toLowerCase()) >= 0) || (project_author.toLowerCase().indexOf(searchTerm.toLowerCase()) >= 0)){
+              searchNotFound = false;
               var new_project = document.createElement('div');
               new_project.setAttribute("class", "img");
               var project_image = document.createElement("img");
               project_image.setAttribute("src", project.projImg);
-              project_image.setAttribute("alt", "New project");
+              project_image.setAttribute("alt", "Author did not upload a valid image!");
               project_image.setAttribute("width", "100");
               project_image.setAttribute("height","200");
               var to_center = document.createElement('center');
@@ -192,71 +175,168 @@
               new_project.appendChild(new_description);
               var portfolio = document.getElementById("portfolio");
               portfolio.appendChild(new_project);
-              });
+
+            }
+
+          });
+
+        }).then(function(onComplete){
+          if(searchNotFound){
+            alert("Search is not found!");
+            window.location.href = "index.html";
+
+          }
+        }, function(error){
+            console.log("Something went wrong!");
+        });
+        
+
+      }
+      else{
+        alert("You need to enter something before searching!")
+      }
+
+
+    }
+
+    function signOut(){
+      firebase.auth().signOut().then(function() {
+        console.log('Signed Out');
+      }, function(error) {
+        console.error('Sign Out Error', error);
+      });
+    }
+
+    function initApp() {
+
+      firebase.auth().onAuthStateChanged(function(user) {
+
+        if (user) {
+        } else {
+        }
+      });
+    }
+
+    function clickingProject() {
+      console.log("clicked a project!");
+    }
+
+    window.onload = function() {
+      initApp();
+      var projectRef = firebase.database().ref('projects/').orderByKey();
+      projectRef.once("value")
+      .then(function(snapshot) {
+        snapshot.forEach(function(childSnapshot){
+          var project = childSnapshot.val();
+          var new_project = document.createElement('div');
+          new_project.setAttribute("class", "img");
+          var project_image = document.createElement("img");
+          project_image.setAttribute("src", project.projImg);
+          project_image.setAttribute("alt", "Author did not upload a valid image!");
+          project_image.setAttribute("width", "100");
+          project_image.setAttribute("height","200");
+          var to_center = document.createElement('center');
+          to_center.appendChild(project_image);
+          new_project.appendChild(to_center);
+
+          var new_title = document.createElement('div');
+          new_title.setAttribute("class", "tit");
+          new_title.appendChild(document.createTextNode(project.title));
+          var new_description = document.createElement('div');
+          new_description.setAttribute("class", "desc");
+          new_description.style.textAlign = "justify";
+          var desc_text = document.createTextNode(project.description);
+          new_description.appendChild(desc_text);
+          var project_link = document.createElement('a');
+          var linkID = childSnapshot.key;
+          var strLink = "project_template_guest.html" + "?key=" + linkID;
+          project_link.setAttribute("href",strLink);
+          project_link.style.borderWidth = "0";
+          project_link.appendChild(new_title);
+              //project_link.addEventListener("click", clickingProject);
+              new_project.appendChild(project_link);
+              new_project.appendChild(new_description);
+              var portfolio = document.getElementById("portfolio");
+              portfolio.appendChild(new_project);
+            });
       });
       console.log("here again");
-  };
-</script>
+    };
+  </script>
 
   <script type="text/javascript">
     $(document).ready(function(){
-      $("#splashscreen").delay(2000).fadeOut();
-      $("#main_content").delay(2400).fadeIn();
+      $("#splashscreen").delay(200).fadeOut();
+      $("#main_content").delay(240).fadeIn();
     });
   </script>
 
 </head>
 <body>
-    <div id="splashscreen">
-        <div id="item1">
-        <img src="images/loading.gif" style="z-index: -10; height: 350px; width: auto;" />
-      </div>
-      <div id="item2">
-        <img src="images/logo_header.png" style="z-index: 10; width: 250px; height: auto;" />
-      </div>
+  <div id="splashscreen">
+    <div id="item1">
+      <img src="images/loading.gif" style="z-index: -10; height: 350px; width: auto;" />
     </div>
+    <div id="item2">
+      <img src="images/logo_header.png" style="z-index: 10; width: 250px; height: auto;" />
+    </div>
+  </div>
 
-    <div id="main_content">
+  <div id="main_content">
     <!-- Navigation -->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>          
-                <a class="navbar-brand" href="index.html"><img src="images/logo.png" alt="" style="max-height: 30px; width: auto; float: left; margin-right: 10px; margin-top: -5px;" /><strong>HEALTH</strong>FUND</a>
-            </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                    <li>
-                        <a href="index.html">Discover Projects</a>
-                    </li>
-                    <li>
-                        <a href="help_guest.html">Help</a>
-                    </li>
-                    <li>
-                        <a href="about_guest.html">About</a>
-                    </li>
-                    <li>
-                        <a href="signin.html">Sign In</a>
-                    </li>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
+      <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>          
+          <a class="navbar-brand" href="index.html"><img src="images/logo.png" alt="" style="max-height: 30px; width: auto; float: left; margin-right: 10px; margin-top: -5px;" /><strong>HEALTH</strong>FUND</a>
         </div>
-        <!-- /.container -->
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <li>
+              <a href="index.html">Discover Projects</a>
+            </li>
+            <li>
+              <a href="help_guest.html">Help</a>
+            </li>
+            <li>
+              <a href="about_guest.html">About</a>
+            </li>
+            <li>
+              <a href="signin.html">Sign In</a>
+            </li>
+          </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+      </div>
+      <!-- /.container -->
     </nav>
 
     <!-- Page Content -->
+    <div class="row">
+      <div class="col-lg-12">
+        <h4 style="text-transform: uppercase; margin-bottom: -10px;"><strong>Discover</strong> Projects</h4><hr>
+      </div>
+    </div> 
+
+    <div class="row">
+      <div class="col-lg-12">
+        <div id="search">
+          <input type="text" id="searchbox" placeholder="Search by Title or Author" />
+          <button type="button" id="search_button" onclick="search()">SEARCH</button>
+        </div>
+      </div>
+    </div> 
     <div class="container" id="portfolio">
 
       <!-- Page Header -->
-      <div class="row">
+      <!-- <div class="row">
         <div class="col-lg-12">
           <h4 style="text-transform: uppercase; margin-bottom: -10px;"><strong>Discover</strong> Projects</h4><hr>
         </div>
@@ -266,25 +346,25 @@
         <div class="col-lg-12">
           <div id="search">
             <input type="text" id="searchbox" placeholder="Search by Title or Author" />
-            <button type="button" id="search_button">SEARCH</button>
+            <button type="button" id="search_button" onclick="search()">SEARCH</button>
           </div>
         </div>
-      </div> 
+      </div>  -->
 
-  </div>
-  <hr>
+    </div>
+    <hr>
 
-  <div class="row">
-    <div class="col-lg-12">
-      <center><p>Copyright &copy; HealthFund 2016</p></center>
+    <div class="row">
+      <div class="col-lg-12">
+        <center><p>Copyright &copy; HealthFund 2016</p></center>
+      </div>
     </div>
   </div>
-  </div>
-    <!-- jQuery -->
-    <script src="js/jquery.js"></script>
+  <!-- jQuery -->
+  <!-- <script src="js/jquery.js"></script> -->
 
-    <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
+  <!-- Bootstrap Core JavaScript -->
+  <script src="js/bootstrap.min.js"></script>
 
 </body>
 </html>
