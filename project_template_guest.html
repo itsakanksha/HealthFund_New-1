@@ -103,9 +103,6 @@
         firebase.database().ref('/users/' + author).once('value').then(function(snapshot) {
           var authorname = snapshot.val().fullname;
           doc_author.innerHTML = authorname;
-          //var strlink = "profile_template_template.html" + "?key=" + author;
-          //var link = document.createElement("a");
-          //doc_author.setAttribute("href", "");
           doc_author.addEventListener("click", function() {
             alert('You must be signed in to view ' + authorname +'\'s information');
           });
@@ -264,7 +261,7 @@
       </div>
       <div id="how-to-donate" class="col-lg-12">
         <h4>How To Donate?</h4> 
-        <p>We believe that investors and donors feel more secure if they pay the researchers/scientists through direct means instead of paying through a third party app. You can read more about the scientists by clicking on their names above and finding their contact information on their profiles. If their work has captured your interest, please contact the scientists directly to discuss this project by e-mailing them a signed copy of the <a href="NDA.html">Non-Disclosure Agreement</a>.</p>   
+        <p>We believe that investors and donors feel more secure if they pay the researchers/scientists through direct means instead of paying through a third party app. You can read more about the scientists by clicking on their names above and finding their contact information on their profiles.</p>   
       </div>
     </div>
   </div>
