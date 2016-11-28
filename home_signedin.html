@@ -96,7 +96,7 @@
               new_description.appendChild(desc_text);
               var project_link = document.createElement('a');
               var linkID = childSnapshot.key;
-              var strLink = "project_template_guest.html" + "?key=" + linkID;
+              var strLink = "project_template_signedin.html" + "?key=" + linkID;
               project_link.setAttribute("href",strLink);
               project_link.style.borderWidth = "0";
               project_link.appendChild(new_title);

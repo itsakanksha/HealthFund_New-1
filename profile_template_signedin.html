@@ -95,7 +95,7 @@
                   else
                       bio_onfile.innerHTML = "This Information does not exist!";
 
-                  email_onfile.innerHTML = user.email;
+                  email_onfile.innerHTML = snapshot.val().email;
 
                   var phoneNumber = snapshot.val().phone;
                   if (phoneNumber != null)
