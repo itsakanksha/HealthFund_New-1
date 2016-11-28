@@ -130,8 +130,6 @@
   <script>
 
     function search(){
-
-
       var searchTerm = document.getElementById('searchbox').value;
       if(searchTerm.length != 0){
         $("#portfolio").empty();
@@ -144,7 +142,24 @@
             var project_title = project.title;
             var project_author = project.author;
             if ((project_title.toLowerCase().indexOf(searchTerm.toLowerCase()) >= 0) || (project_author.toLowerCase().indexOf(searchTerm.toLowerCase()) >= 0)){
+
               searchNotFound = false;
+
+              var portfolio = document.getElementById("portfolio");
+              var go_back_btn = document.createElement('div');
+              var go_back_link = document.createElement("a");
+              go_back_link.innerHTML = "&laquo; Go Back";
+              go_back_link.href = "index.html";
+              go_back_btn.appendChild(go_back_link);
+              go_back_btn.style.marginBottom = "20px";
+              go_back_btn.style.marginLeft = "4%";
+              portfolio.appendChild(go_back_btn);
+
+              var searchedfor = document.createElement("p");
+              searchedfor.style.textAlign = "center";
+              searchedfor.innerHTML = "You searched for \"" + searchTerm + "\"";
+              portfolio.appendChild(searchedfor);
+
               var new_project = document.createElement('div');
               new_project.setAttribute("class", "img");
               var project_image = document.createElement("img");
@@ -182,7 +197,7 @@
 
         }).then(function(onComplete){
           if(searchNotFound){
-            alert("Search is not found!");
+            alert("Sorry, we couldn't find what you're looking for!");
             window.location.href = "index.html";
 
           }
@@ -319,6 +334,8 @@
     </nav>
 
     <!-- Page Content -->
+
+    <div class="container" id="portfolio">
     <div class="row">
       <div class="col-lg-12">
         <h4 style="text-transform: uppercase; margin-bottom: -10px;"><strong>Discover</strong> Projects</h4><hr>
@@ -333,7 +350,6 @@
         </div>
       </div>
     </div> 
-    <div class="container" id="portfolio">
 
       <!-- Page Header -->
       <!-- <div class="row">

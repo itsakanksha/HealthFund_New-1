@@ -58,7 +58,24 @@
             var project_title = project.title;
             var project_author = project.author;
             if ((project_title.toLowerCase().indexOf(searchTerm.toLowerCase()) >= 0) || (project_author.toLowerCase().indexOf(searchTerm.toLowerCase()) >= 0)){
+
               searchNotFound = false;
+
+              var portfolio = document.getElementById("portfolio");
+              var go_back_btn = document.createElement('div');
+              var go_back_link = document.createElement("a");
+              go_back_link.innerHTML = "&laquo; Go Back";
+              go_back_link.href = "home_signedin.html";
+              go_back_btn.appendChild(go_back_link);
+              go_back_btn.style.marginBottom = "20px";
+              go_back_btn.style.marginLeft = "4%";
+              portfolio.appendChild(go_back_btn);
+
+              var searchedfor = document.createElement("p");
+              searchedfor.style.textAlign = "center";
+              searchedfor.innerHTML = "You searched for \"" + searchTerm + "\"";
+              portfolio.appendChild(searchedfor);
+
               var new_project = document.createElement('div');
               new_project.setAttribute("class", "img");
               var project_image = document.createElement("img");
@@ -69,7 +86,6 @@
               var to_center = document.createElement('center');
               to_center.appendChild(project_image);
               new_project.appendChild(to_center);
-
               var new_title = document.createElement('div');
               new_title.setAttribute("class", "tit");
               new_title.appendChild(document.createTextNode(project.title));
@@ -87,17 +103,15 @@
               //project_link.addEventListener("click", clickingProject);
               new_project.appendChild(project_link);
               new_project.appendChild(new_description);
-              var portfolio = document.getElementById("portfolio");
               portfolio.appendChild(new_project);
-
             }
 
           });
 
         }).then(function(onComplete){
           if(searchNotFound){
-            alert("Search is not found!");
-            window.location.href = "index.html";
+            alert("Sorry, we couldn't find what you're looking for!");
+            window.location.href = "home_signedin.html";
 
           }
         }, function(error){
