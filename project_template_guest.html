@@ -54,6 +54,7 @@
     var project_name = a.substring(a.indexOf("=")+1);
     var doc_context = document.getElementById("context");
     var doc_title = document.getElementById("title");
+    var doc_video = document.getElementById("youtube");
     var doc_img = document.getElementById("source-image");
     var doc_description = document.getElementById("description");
     var doc_significance = document.getElementById("significance");
@@ -116,6 +117,11 @@
       {
         doc_img.setAttribute("src", image);
         doc_img.setAttribute("style", "width: 100%; height: auto");
+      }
+
+      var youtube = snapshot.val().youtube;
+      if(youtube != null){
+        doc_video.setAttribute("src", youtube);
       }
 
     });
@@ -233,6 +239,14 @@
         </center>  
         <hr>
       </div>
+      <div id="project-image" class="col-lg-12">
+        <center>
+          <iframe id="youtube" style="width: 100%; height: 250px;" src="https://www.youtube.com/embed/1AIew3RN4R4" frameborder="0" allowfullscreen></iframe>
+
+        </center>  
+        <hr>
+      </div>
+      
       <div id="project-writeup" class="col-lg-12">
         <h4>Description</h4>    <br />  
         <p id="description"></p>

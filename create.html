@@ -60,6 +60,7 @@
       var goals = document.getElementById('goals');
       var collaborators = document.getElementById('collaborators');
       var projImg = document.getElementById('projImg');
+      var youtube = document.getElementById('youtube');
 
       var userID = firebase.auth().currentUser.uid;
       var userRef = firebase.database().ref('users/' + userID + '/projects');
@@ -75,14 +76,15 @@
         goals: goals.value,
         collaborators: collaborators.value,
         author: userID,
-        projImg: projImg.value
+        projImg: projImg.value,
+        youtube: youtube.value
       });
 
       var projID = newProjRef.key;
       userRef.push(projID);
 
       alert("Your project has been created!");
-        window.location.href="index.html";
+        window.location.href="myprojects.html";
     }
 
     /**
@@ -238,6 +240,16 @@
                 </td>
             </tr>
             <tr><td><br /></td></tr>
+            <tr>
+                <td style="padding-right: 20px;">
+                    Video URL: 
+                </td>
+                <td>
+                    <input type="text" name="video" placeholder="Input a Youtube URL!" id="youtube" style="width: 90%; border: 1px #999 solid;">
+                </td>
+            </tr>
+            <tr><td><br /></td></tr>
+
             <!--
             <tr><td><br /></td></tr>
             <tr>
