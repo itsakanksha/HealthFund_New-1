@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>HealthFund | Connecting Researchers with Investors and Patients</title>
+
+  <!-- Bootstrap Core CSS -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <link href="css/2-col-portfolio.css" rel="stylesheet">
+  <link href="css/custom.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/stylesheet.css">
+  <link href="jquery-ui.css" rel="stylesheet">
+
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+  <script src="js/jquery.min.js"></script>
+  <script src="dist/js/standalone/selectize.js"></script>
+  <script src="js/index.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/3.6.0/firebase.js"></script>
+  <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyDbJUBMk1sZD-XGvQFTt4VV-M10H4mZ1Ek",
+      authDomain: "healthfund-2d39b.firebaseapp.com",
+      databaseURL: "https://healthfund-2d39b.firebaseio.com",
+      storageBucket: "healthfund-2d39b.appspot.com",
+      messagingSenderId: "370511046282"
+    };
+    firebase.initializeApp(config);
+  </script>
+
+  <script>
+
+    function signOut(){
+      firebase.auth().signOut().then(function() {
+        console.log('Signed Out');
+        window.location.href="index.html";
+      }, function(error) {
+        console.error('Sign Out Error', error);
+      });
+    }
+
+    function deleteProject() {
+      if (confirm("Are you sure you want to delete your project? This action is irreversible!") == true) 
+      {
+          var a = window.location.toString();
+          var project_ID = a.substring(a.indexOf("=")+1);
+
+          var project_ref = firebase.database().ref('projects/' + project_ID);
+          project_ref.on('value', function(snapshot) {
+
+            var authorID = snapshot.val().author;
+            //DELETE THE PROJECT ID FROM THE USER'S ACCOUNT
+            if (authorID != null)
+            {
+              var project_todelete;
+              var authorProjectsRef = firebase.database().ref('/users/' + authorID + '/projects/');
+              authorProjectsRef.once('value', function(snapshot) {
+                    snapshot.forEach(function(childSnapshot) {
+                      var project_key = childSnapshot.key;
+                      var project_value = childSnapshot.val();
+                      if (project_value === project_ID)
+                      {
+                        firebase.database().ref('/users/' + authorID + '/projects/' + project_key).remove();
+                      }
+                    });
+                });
+            };
+          });
+          //DELETE THE PROJECT ITSELF
+          project_ref.remove().then(function() {
+            console.log("Remove succeeded.");
+            window.location.href="myprojects.html";
+          });
+      };
+    }
+
+
+    function initApp() {
+      // Listening for auth state changes.
+      // [START authstatelistener]
+      var a = window.location.toString();
+      var project_name = a.substring(a.indexOf("=")+1);
+      var doc_context = document.getElementById("context");
+      var doc_title = document.getElementById("title");
+      var doc_img = document.getElementById("source-image");
+      var doc_description = document.getElementById("description");
+      var doc_significance = document.getElementById("significance");
+      var doc_goals = document.getElementById("goals");
+      var doc_author = document.getElementById("author");
+      var doc_collaborators = document.getElementById("collaborators");
+      var project_ref = firebase.database().ref('projects/' + project_name);
+      project_ref.on('value', function(snapshot) {
+      var context = snapshot.val().context;
+      if (context != null)
+        doc_context.innerHTML = context;
+      else
+        doc_context.innerHTML = "To be updated!";
+
+      var title = snapshot.val().title;
+      if (title != null)
+        doc_title.innerHTML = title;
+      else
+        doc_title.innerHTML = "To be updated!";
+
+      var description = snapshot.val().description;
+      if (description != null)
+        doc_description.innerHTML = description;
+      else
+        doc_description.innerHTML = "To be updated!";
+
+      var significance = snapshot.val().significance;
+      if (significance != null)
+        doc_significance.innerHTML = significance;
+      else
+        doc_significance.innerHTML = "To be updated!";
+
+      var goals = snapshot.val().goals;
+      if (goals != null)
+        doc_goals.innerHTML = goals;
+      else
+        doc_goals.innerHTML = "To be updated!";
+
+      var collaborators = snapshot.val().collaborators;
+      if (collaborators != null)
+        doc_collaborators.innerHTML = collaborators;
+      else
+        doc_collaborators.innerHTML = "To be updated!";
+
+      var author = snapshot.val().author;
+      if (author != null)
+        firebase.database().ref('/users/' + author).once('value').then(function(snapshot) {
+          var authorname = snapshot.val().fullname;
+          doc_author.innerHTML = authorname;
+          var strlink = "profile_template_signedin.html" + "?key=" + author;
+          doc_author.setAttribute("href",strlink);
+        });
+
+      else
+        doc_author.innerHTML = "To be updated!";
+
+      var image = snapshot.val().projImg;
+      if (image !=null)
+        doc_img.setAttribute("src", image);
+      });
+
+
+      var edit_btn = document.getElementById('edit_button');
+      var delete_btn = document.getElementById('delete_button');
+
+      edit_btn.onclick = function() {
+        window.location.href="project_edit_template2.html" + "?key=" + project_name;
+      };
+      delete_btn.onclick = deleteProject;
+
+
+    firebase.auth().onAuthStateChanged(function(user) {
+      // [START_EXCLUDE silent]
+      // [END_EXCLUDE]
+      if (user) {
+      } else {
+        window.location.href="index.html";
+      }
+        // [START_EXCLUDE silent]
+        // [END_EXCLUDE]
+      });
+      // [END authstatelistener]
+      document.getElementById('quickstart-sign-out').addEventListener('click', signOut);
+    }
+
+    window.onload = function() {
+      // alert(window.location.search);
+      // var a = window.location.toString();
+      // var name = a.substring(a.indexOf("=")+1);
+      // alert(name);
+      initApp();
+    };
+  </script>
+
+  <style>
+  #edit_button {
+    text-align: center;
+    background-color: #34badf;
+    min-height: 1px;
+    padding-right: 5px;
+    padding-left: 5px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    min-height: 28px;
+    color: #fff;
+    border-radius: 5px;
+    word-wrap: normal;
+    width: 47%;
+  }
+
+  #delete_button {
+    text-align: center;
+    background-color: #DC3844;
+    min-height: 1px;
+    padding-right: 5px;
+    padding-left: 5px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    margin-top: -37px;
+    min-height: 28px;
+    color: #fff;
+    border-radius: 5px;
+    word-wrap: normal;
+    width: 47%;
+    float: right;
+  }
+  </style>
+
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="home_signedin.html"><img src="images/logo.png" alt="" style="max-height: 30px; width: auto; float: left; margin-right: 10px; margin-top: -5px;" /><strong>HEALTH</strong>FUND</a>
+      </div>
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li>
+            <a href="home_signedin.html">Discover Projects</a>
+          </li>
+          <li>
+            <a href="myaccount.html">My Account</a>
+          </li>
+          <li>
+            <a href="myprojects.html">My Projects</a>
+          </li>
+          <li>
+            <a href="help_signedin.html">Help</a>
+          </li>
+          <li>
+            <a href="about_signedin.html">About</a>
+          </li>
+          <li>
+            <a href="#" id="quickstart-sign-out">Sign Out</a>
+          </li>
+        </ul>
+      </div>
+      <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+  </nav>
+
+  <!-- Page Content -->
+  <div class="container">
+
+    <div class="row">
+      <div class="col-lg-12">
+      <div id="edit_button">
+        Edit Project
+      </div>
+      <div id="delete_button">
+        Delete Project
+      </div>
+    </div>
+    </div> 
+
+    <!-- Page Header -->
+    <div class="row">
+      <div class="col-lg-12">
+        <h3 id="title"></h3>
+        <hr>
+      </div>
+    </div> 
+    <!-- /.row -->
+    <!-- Projects Row -->
+
+    <div class="row">
+      <div id="project-image" class="col-lg-12">
+        <center>
+          <div class="project_image"><img id="source-image" src="" alt="Project image url uploaded is incorrect!" style="height: auto;width: 100%;"/> </div>  
+        </center>  
+        <hr>
+      </div>
+      <div id="project-writeup" class="col-lg-12">
+        <h4>Description</h4> <br />     
+        <p id="description"></p>
+        <b>Context of This Research</b><br />
+        <p id="context"></p>
+
+        <b>Significance</b><br />
+
+        <p id="significance"></p>
+
+        <b>Goals of the project</b><br />
+
+        <p id="goals"></p> 
+        <hr>
+      </div>
+      <!-- <div id="funds-received" class="col-lg-12">
+        <h4>Funds Received</h4>      
+        <div class="progress">
+          <div class="progress-bar" role="progressbar" aria-valuenow="40"
+          aria-valuemin="0" aria-valuemax="100" style="width:40%">
+          $7000
+        </div>
+
+      </div>
+
+      <div style="float: left;">$0</div><div style="float: right">$25,000+</div><br />
+      <hr>
+    </div> -->
+    <div id="project-authors" class="col-lg-12">
+      <h4>Authors</h4>      
+      <a id="author" href="profile_template_signedin.html">Author</a>
+      <hr>
+    </div>
+    <div id="project-collaborators" class="col-lg-12">
+      <h4>Collaborators</h4>      
+      <p id="collaborators"></p> 
+      <!-- SOME USERS MAY NOT HAVE PROFILES ON THIS APP SO NO LINK FOR THEM! -->
+      <hr>
+    </div>
+     <div id="how-to-donate" class="col-lg-12">
+        <h4>How To Donate?</h4> 
+        <p>We believe that investors and donors feel more secure if they pay the researchers/scientists through direct means instead of paying through a third party app. You can read more about the scientists by clicking on their names above and finding their contact information on their profiles.</p>   
+      </div>
+    </div>
+  </div>
+  <!-- /.container -->
+
+  <!-- jQuery -->
+  <script src="js/jquery.js"></script>
+
+  <!-- Bootstrap Core JavaScript -->
+  <script src="js/bootstrap.min.js"></script>
+
+</body>
+</html>
