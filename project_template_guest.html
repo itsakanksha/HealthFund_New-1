@@ -103,8 +103,12 @@
         firebase.database().ref('/users/' + author).once('value').then(function(snapshot) {
           var authorname = snapshot.val().fullname;
           doc_author.innerHTML = authorname;
-          var strlink = "profile_template_template.html" + "?key=" + author;
-          doc_author.setAttribute("href", strlink);
+          //var strlink = "profile_template_template.html" + "?key=" + author;
+          //var link = document.createElement("a");
+          //doc_author.setAttribute("href", "");
+          doc_author.addEventListener("click", function() {
+            alert('You must be signed in to view ' + authorname +'\'s information');
+          });
         });
 
       else
@@ -249,7 +253,7 @@
       </div>
       <div id="project-authors" class="col-lg-12">
         <h4>Authors</h4>      
-        <p id="author"></p>
+        <a id="author"></a>
         <hr>
       </div>
       <div id="project-collaborators" class="col-lg-12">
