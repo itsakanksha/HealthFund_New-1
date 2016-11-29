@@ -59,6 +59,7 @@
     var project_name = a.substring(a.indexOf("=")+1);
     var doc_context = document.getElementById("context");
     var doc_title = document.getElementById("title");
+    var doc_video = document.getElementById("youtube");
     var doc_img = document.getElementById("source-image");
     var doc_description = document.getElementById("description");
     var doc_significance = document.getElementById("significance");
@@ -118,6 +119,12 @@
       var image = snapshot.val().projImg;
       if (image !=null)
         doc_img.setAttribute("src", image);
+
+      var youtube = snapshot.val().youtube;
+      if(youtube != null){
+        doc_video.setAttribute("src", youtube);
+      }
+      
     });
 
     firebase.auth().onAuthStateChanged(function(user) {
@@ -208,6 +215,13 @@
       <div id="project-image" class="col-lg-12">
         <center>
           <div class="project_image"><img id="source-image" src="" alt="Project image url uploaded is incorrect!" style="height: auto;width: 100%;"/> </div>  
+        </center>  
+        <hr>
+      </div>
+      <div id="project-image" class="col-lg-12">
+        <center>
+          <iframe id="youtube" style="width: 100%; height: 250px;" src="" frameborder="0" allowfullscreen></iframe>
+
         </center>  
         <hr>
       </div>
