@@ -40,15 +40,15 @@
       messagingSenderId: "370511046282"
     };
     firebase.initializeApp(config);
-  </script>
+    </script>
 
-  <script type="text/javascript">
+    <script type="text/javascript">
     function signOut(){
       firebase.auth().signOut().then(function() {
-          console.log('Signed Out');
+        console.log('Signed Out');
         window.location.href="index.html";
       }, function(error) {
-          console.error('Sign Out Error', error);
+        console.error('Sign Out Error', error);
       });
     }
 
@@ -65,26 +65,37 @@
       var userID = firebase.auth().currentUser.uid;
       var userRef = firebase.database().ref('users/' + userID + '/projects');
 
+      var userinfo = firebase.database().ref('users/' + userID);
       var projRef = firebase.database().ref('projects');
+      var fullname = "";
+      userinfo.once("value")
+      .then(function(snapshot) {
+        fullname = snapshot.val().fullname;
+      }).then(function(onComplete){
+        var newProjRef = projRef.push();
+        newProjRef.set({
+          title: title.value, 
+          description: description.value,
+          context: context.value,
+          significance: significance.value,
+          goals: goals.value,
+          collaborators: collaborators.value,
+          author: userID,
+          projImg: projImg.value,
+          youtube: youtube.value,
+          authorname: fullname
+        });
 
-      var newProjRef = projRef.push();
-      newProjRef.set({
-        title: title.value, 
-        description: description.value,
-        context: context.value,
-        significance: significance.value,
-        goals: goals.value,
-        collaborators: collaborators.value,
-        author: userID,
-        projImg: projImg.value,
-        youtube: youtube.value
+        var projID = newProjRef.key;
+        userRef.push(projID);
+
+        alert("Your project has been created!");
+        window.location.href="myprojects.html";
+
+      }, function(error){
+        console.log("Something went wrong!");
       });
 
-      var projID = newProjRef.key;
-      userRef.push(projID);
-
-      alert("Your project has been created!");
-        window.location.href="myprojects.html";
     }
 
     /**
@@ -92,7 +103,7 @@
      *  - firebase.auth().onAuthStateChanged: This listener is called when the user is signed in or
      *    out, and that is where we update the UI.
      */
-    function initApp() {
+     function initApp() {
       // Listening for auth state changes.
       // [START authstatelistener]
       firebase.auth().onAuthStateChanged(function(user) {
@@ -113,140 +124,140 @@
 
 
     window.onload = function() {
-        initApp();
+      initApp();
     };
-  </script> 
-</head>
-<body>
+    </script> 
+  </head>
+  <body>
 
     <!-- Navigation -->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-        <a class="navbar-brand" href="home_signedin.html"><img src="images/logo.png" alt="" style="max-height: 30px; width: auto; float: left; margin-right: 10px; margin-top: -5px;" /><strong>HEALTH</strong>FUND</a>
-            </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-
-                    <ul class="nav navbar-nav">
-                    <li>
-                        <a href="home_signedin.html">Discover Projects</a>
-                    </li>
-                    <li>
-                        <a href="myaccount.html">My Account</a>
-                    </li>
-                    <li>
-                        <a href="myprojects.html">My Projects</a>
-                    </li>
-                    <li>
-                        <a href="help_signedin.html">Help</a>
-                    </li>
-                    <li>
-                        <a href="about_signedin.html">About</a>
-                    </li>
-                    <li>
-                        <a href="#" id="quickstart-sign-out">Sign Out</a>
-                    </li>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
+      <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="home_signedin.html"><img src="images/logo.png" alt="" style="max-height: 30px; width: auto; float: left; margin-right: 10px; margin-top: -5px;" /><strong>HEALTH</strong>FUND</a>
         </div>
-        <!-- /.container -->
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+          <ul class="nav navbar-nav">
+            <li>
+              <a href="home_signedin.html">Discover Projects</a>
+            </li>
+            <li>
+              <a href="myaccount.html">My Account</a>
+            </li>
+            <li>
+              <a href="myprojects.html">My Projects</a>
+            </li>
+            <li>
+              <a href="help_signedin.html">Help</a>
+            </li>
+            <li>
+              <a href="about_signedin.html">About</a>
+            </li>
+            <li>
+              <a href="#" id="quickstart-sign-out">Sign Out</a>
+            </li>
+          </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+      </div>
+      <!-- /.container -->
     </nav>
 
     <!-- Page Content -->
     <div class="container">
 
-        
-        <!-- Page Header -->
+
+      <!-- Page Header -->
       <div class="row">
         <div class="col-lg-12">
           <h4 style="text-transform: uppercase; margin-bottom: -10px;"><strong>CREATE</strong> A NEW PROJECT</h4><hr>
         </div>
       </div> 
-        <!-- /.row -->
-        <!-- Projects Row -->
+      <!-- /.row -->
+      <!-- Projects Row -->
 
-        <div class="row">
-            <div class="col-lg-12">
-                        <table>
+      <div class="row">
+        <div class="col-lg-12">
+          <table>
             <tr>
-                <td style="padding-right: 20px;">
-                    Title: 
-                </td>
-                <td>
-                    <input type="text" id="title" name="title" style="width: 90%; border: 1px #999 solid;">
-                </td>
+              <td style="padding-right: 20px;">
+                Title: 
+              </td>
+              <td>
+                <input type="text" id="title" name="title" style="width: 90%; border: 1px #999 solid;">
+              </td>
             </tr>
             <tr><td><br /></td></tr>
             <tr>
-                <td style="padding-right: 20px;">
-                    Description: 
-                </td>
-                <td>
-                    <textarea name="description" id="description" rows="4" style="width: 90%; border: 1px #999 solid;"></textarea>
-                </td>
+              <td style="padding-right: 20px;">
+                Description: 
+              </td>
+              <td>
+                <textarea name="description" id="description" rows="4" style="width: 90%; border: 1px #999 solid;"></textarea>
+              </td>
             </tr>
             <tr><td><br /></td></tr>
             <tr>
-                <td style="padding-right: 20px;">
-                    Context of Research: 
-                </td>
-                <td>
-                    <textarea name="context" id="context" rows="4" style="width: 90%; border: 1px #999 solid;"></textarea>
-                </td>
+              <td style="padding-right: 20px;">
+                Context of Research: 
+              </td>
+              <td>
+                <textarea name="context" id="context" rows="4" style="width: 90%; border: 1px #999 solid;"></textarea>
+              </td>
             </tr>
             <tr><td><br /></td></tr>
             <tr>
-                <td style="padding-right: 20px;">
-                    Significance: 
-                </td>
-                <td>
-                    <textarea name="significance" id="significance" rows="4" style="width: 90%; border: 1px #999 solid;"></textarea>
-                </td>
+              <td style="padding-right: 20px;">
+                Significance: 
+              </td>
+              <td>
+                <textarea name="significance" id="significance" rows="4" style="width: 90%; border: 1px #999 solid;"></textarea>
+              </td>
             </tr>
             <tr><td><br /></td></tr>
             <tr>
-                <td style="padding-right: 20px;">
-                    Goals of this project: 
-                </td>
-                <td>
-                    <textarea rows="4" name="goals" id="goals" style="width: 90%; border: 1px #999 solid;"></textarea>
-                </td>
+              <td style="padding-right: 20px;">
+                Goals of this project: 
+              </td>
+              <td>
+                <textarea rows="4" name="goals" id="goals" style="width: 90%; border: 1px #999 solid;"></textarea>
+              </td>
             </tr>
             <tr><td><br /></td></tr>
             <tr>
-                <td style="padding-right: 20px;">
-                    Project Image (URL):
-                </td>
-                <td>
-                    <input type="text" id="projImg" name="projImg" style="width: 90%; border: 1px #999 solid;">
-                </td>
+              <td style="padding-right: 20px;">
+                Project Image (URL):
+              </td>
+              <td>
+                <input type="text" id="projImg" name="projImg" style="width: 90%; border: 1px #999 solid;">
+              </td>
             </tr>
             <tr><td><br /></td></tr>
             <tr>
-                <td style="padding-right: 20px;">
-                    Collaborators: 
-                </td>
-                <td>
-                    <input type="text" name="collaborators" id="collaborators" style="width: 90%; border: 1px #999 solid;">
-                </td>
+              <td style="padding-right: 20px;">
+                Collaborators: 
+              </td>
+              <td>
+                <input type="text" name="collaborators" id="collaborators" style="width: 90%; border: 1px #999 solid;">
+              </td>
             </tr>
             <tr><td><br /></td></tr>
             <tr>
-                <td style="padding-right: 20px;">
-                    Video URL: 
-                </td>
-                <td>
-                    <input type="text" name="video" placeholder="Input a Youtube URL!" id="youtube" style="width: 90%; border: 1px #999 solid;">
-                </td>
+              <td style="padding-right: 20px;">
+                Video URL: 
+              </td>
+              <td>
+                <input type="text" name="video" placeholder="Input a Youtube URL!" id="youtube" style="width: 90%; border: 1px #999 solid;">
+              </td>
             </tr>
             <tr><td><br /></td></tr>
 
@@ -264,11 +275,11 @@
                     </div>
                 </td>
             </tr>
-            -->
+          -->
         </table>
-                <br /><br />
-                <center><a href="#"><div class="login_button" id="quickstart-save-project">SUBMIT</div></a><br /></center>            </div>
-        </div>
+        <br /><br />
+        <center><a href="#"><div class="login_button" id="quickstart-save-project">SUBMIT</div></a><br /></center>            </div>
+      </div>
 
     </div>
     <!-- /.container -->
@@ -278,5 +289,5 @@
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
-</body>
-</html>
+  </body>
+  </html>

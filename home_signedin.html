@@ -56,7 +56,7 @@
           snapshot.forEach(function(childSnapshot){
             var project = childSnapshot.val();
             var project_title = project.title;
-            var project_author = project.author;
+            var project_author = project.authorname;
             if ((project_title.toLowerCase().indexOf(searchTerm.toLowerCase()) >= 0) || (project_author.toLowerCase().indexOf(searchTerm.toLowerCase()) >= 0)){
 
               searchNotFound = false;
