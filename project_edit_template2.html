@@ -113,7 +113,8 @@
       var project_name = a.substring(a.indexOf("=")+1);
       var doc_context = document.getElementById("context");
       var doc_title = document.getElementById("title");
-      var doc_img = document.getElementById("source-image");
+      var doc_img = document.getElementById("project_image");
+      var doc_video = document.getElementById("youtube");
       var doc_description = document.getElementById("description");
       var doc_significance = document.getElementById("significance");
       var doc_goals = document.getElementById("goals");
@@ -170,8 +171,12 @@
         doc_author.innerHTML = "To be updated!";
 
       var image = snapshot.val().projImg;
-      if (image !=null)
-        doc_img.setAttribute("src", image);
+      if (image != null)
+        doc_img.value = image;
+
+      var video = snapshot.val().youtube;
+      if (video != null)
+        doc_video.value = video;
     });
 
   
@@ -300,7 +305,7 @@
     <!-- Page Header -->
     <div class="row">
       <div class="col-lg-12"><br />
-      <input type="text" id="title" style="width: 100%; font-size: 18px;"/>
+      <input type="text" id="title" style="width: 100%; font-size: 18px; border: 1px solid #333;"/>
         <hr>
       </div>
     </div> 
@@ -309,23 +314,28 @@
 
     <div class="row">
       <div id="project-image" class="col-lg-12">
+          Image URL: <br />
         <center>
-          <div class="project_image"><img id="source-image" src="" alt="Project image url uploaded is incorrect!" style="height: auto;width: 100%;"/> </div>  
+          <input type="text" id="project_image" style="width: 100%; font-size: 18px; border: 1px solid #333;"/>
+        </center>  
+          <br />Video URL: <br />
+        <center>
+          <input type="text" id="youtube" style="width: 100%; font-size: 18px; border: 1px solid #333;"/>
         </center>  
         <hr>
       </div>
       <div id="project-writeup" class="col-lg-12">
         <h4>Description</h4> <br />     
-        <textarea id="description" style="width: 100%;"></textarea><br /><br />
+        <textarea id="description" style="width: 100%; border: 1px solid #333;"></textarea><br /><br />
 
         <b>Context of This Research</b><br />
-        <textarea id="context" style="width: 100%;"></textarea><br /><br />
+        <textarea id="context" style="width: 100%; border: 1px solid #333;"></textarea><br /><br />
 
         <b>Significance</b><br />
-        <textarea id="significance" style="width: 100%;"></textarea><br /><br />
+        <textarea id="significance" style="width: 100%; border: 1px solid #333;"></textarea><br /><br />
 
         <b>Goals of the project</b><br />
-        <textarea id="goals" style="width: 100%;"></textarea><br /><br />
+        <textarea id="goals" style="width: 100%; border: 1px solid #333;"></textarea><br /><br />
         <hr>
       </div>
       <!-- <div id="funds-received" class="col-lg-12">
@@ -343,7 +353,7 @@
     </div> -->
     <div id="project-authors" class="col-lg-12">
       <h4>Authors</h4>      
-      <a id="author" href="profile_template_signedin.html">Author</a>
+      <p id="author"></p>
       <hr>
     </div>
     <div id="project-collaborators" class="col-lg-12">

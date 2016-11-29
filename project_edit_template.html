@@ -144,8 +144,6 @@
         firebase.database().ref('/users/' + author).once('value').then(function(snapshot) {
           var authorname = snapshot.val().fullname;
           doc_author.innerHTML = authorname;
-          var strlink = "profile_template_signedin.html" + "?key=" + author;
-          doc_author.setAttribute("href",strlink);
         });
 
       else
@@ -329,7 +327,7 @@
     </div> -->
     <div id="project-authors" class="col-lg-12">
       <h4>Authors</h4>      
-      <a id="author" href="profile_template_signedin.html">Author</a>
+      <p id="author"></p>
       <hr>
     </div>
     <div id="project-collaborators" class="col-lg-12">
